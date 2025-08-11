@@ -161,22 +161,26 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
           </Alert>
         )}
 
-        <div className="text-center mt-5 space-y-2">
-          <h1 className="text-xl font-medium text-gray-900">{isDemo ? "Demo: " : ""}Stock Predictor</h1>
-          <p className="text-gray-500 text-xs">AI-powered price predictions based on news analysis</p>
-        </div>
+       
 
         <div className="grid grid-cols-1 xl:grid-cols-10 gap-6">
           {/* Chart Section - 70% of screen (7/10 columns) */}
           <div className="xl:col-span-7">
             <Card className="bg-white  border  border-gray-200 shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-900">Price Chart</CardTitle>
+                <CardTitle className="text-sm font-medium text-gray-900">Price Chart   <span className="text-center">
+          <h1 className="text-xl font-medium text-gray-900">{isDemo ? "Demo: " : ""}Stock Predictor</h1>
+          <p className="text-gray-500 text-xs">AI-powered price predictions based on news analysis</p>
+        </span></CardTitle>
                 <CardDescription className="text-xs text-gray-500">
                   {predictionData.length > 0
                     ? `${months} month prediction for ${stockSymbol}`
-                    : "Generate prediction to view chart"}
+                    : "Generate prediction to view chart"} 
+                   
+                  
+                   
                 </CardDescription>
+                
               </CardHeader>
               <CardContent className="pt-0">
                 {predictionData.length > 0 ? (
