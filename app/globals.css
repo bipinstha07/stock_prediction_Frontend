@@ -299,3 +299,70 @@ button, a, [role="button"] {
 .particle:nth-child(38) { animation: float3 15s linear infinite; }
 .particle:nth-child(39) { animation: float 18s linear infinite; }
 .particle:nth-child(40) { animation: float2 11s linear infinite; }
+
+/* Stock-themed background particles */
+@keyframes stockFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-15px) translateX(8px) rotate(90deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-25px) translateX(-3px) rotate(180deg);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-10px) translateX(-12px) rotate(270deg);
+    opacity: 0.6;
+  }
+}
+
+/* Stock chart background elements */
+.stock-chart-bg {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stock-chart-bg svg {
+  opacity: 0.1;
+  transition: opacity 0.3s ease;
+}
+
+.stock-chart-bg:hover svg {
+  opacity: 0.2;
+}
+
+.stock-symbol {
+  position: absolute;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.candlestick {
+  position: absolute;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.candlestick .body {
+  width: 1px;
+  background: currentColor;
+  margin: 0 auto;
+}
+
+.candlestick .wick {
+  width: 3px;
+  height: 1px;
+  background: currentColor;
+  margin: 0 auto;
+  margin-top: 1px;
+}

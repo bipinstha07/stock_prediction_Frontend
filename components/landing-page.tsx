@@ -14,7 +14,233 @@ export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: Landin
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       
-   
+      {/* Stock Themed Background */}
+      <div className="absolute inset-0 pointer-events-none stock-chart-bg" style={{ zIndex: 1 }}>
+        {/* Stock Chart Lines */}
+        <svg className="absolute top-20 left-10 w-32 h-24" viewBox="0 0 100 60" fill="none">
+          <path d="M0 50 L20 40 L40 45 L60 30 L80 35 L100 25" stroke="#22c55e" strokeWidth="2" fill="none"/>
+          <circle cx="20" cy="40" r="2" fill="#22c55e"/>
+          <circle cx="40" cy="45" r="2" fill="#22c55e"/>
+          <circle cx="60" cy="30" r="2" fill="#22c55e"/>
+          <circle cx="80" cy="35" r="2" fill="#22c55e"/>
+          <circle cx="100" cy="25" r="2" fill="#22c55e"/>
+        </svg>
+        
+        <svg className="absolute top-40 right-20 w-40 h-32" viewBox="0 0 100 60" fill="none">
+          <path d="M0 40 L25 35 L50 45 L75 20 L100 30" stroke="#ef4444" strokeWidth="2" fill="none"/>
+          <circle cx="25" cy="35" r="2" fill="#ef4444"/>
+          <circle cx="50" cy="45" r="2" fill="#ef4444"/>
+          <circle cx="75" cy="20" r="2" fill="#ef4444"/>
+          <circle cx="100" cy="30" r="2" fill="#ef4444"/>
+        </svg>
+        
+        <svg className="absolute bottom-40 left-20 w-36 h-28" viewBox="0 0 100 60" fill="none">
+          <path d="M0 45 L30 30 L60 40 L100 25" stroke="#3b82f6" strokeWidth="2" fill="none"/>
+          <circle cx="30" cy="30" r="2" fill="#3b82f6"/>
+          <circle cx="60" cy="40" r="2" fill="#3b82f6"/>
+          <circle cx="100" cy="25" r="2" fill="#3b82f6"/>
+        </svg>
+        
+        {/* Additional Chart Elements */}
+        <svg className="absolute top-60 left-1/3 w-28 h-20" viewBox="0 0 100 60" fill="none">
+          <path d="M0 35 L33 25 L66 40 L100 30" stroke="#8b5cf6" strokeWidth="1.5" fill="none"/>
+          <circle cx="33" cy="25" r="1.5" fill="#8b5cf6"/>
+          <circle cx="66" cy="40" r="1.5" fill="#8b5cf6"/>
+          <circle cx="100" cy="30" r="1.5" fill="#8b5cf6"/>
+        </svg>
+        
+        <svg className="absolute bottom-20 right-10 w-32 h-24" viewBox="0 0 100 60" fill="none">
+          <path d="M0 30 L25 40 L50 20 L75 35 L100 25" stroke="#f59e0b" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="40" r="1.5" fill="#f59e0b"/>
+          <circle cx="50" cy="20" r="1.5" fill="#f59e0b"/>
+          <circle cx="75" cy="35" r="1.5" fill="#f59e0b"/>
+          <circle cx="100" cy="25" r="1.5" fill="#f59e0b"/>
+        </svg>
+        
+        {/* Stock Symbols */}
+        <div className="stock-symbol absolute top-32 left-1/4">AAPL</div>
+        <div className="stock-symbol absolute top-48 right-1/3">GOOGL</div>
+        <div className="stock-symbol absolute bottom-32 left-1/3">TSLA</div>
+        <div className="stock-symbol absolute top-64 left-1/2">MSFT</div>
+        <div className="stock-symbol absolute bottom-48 right-1/4">AMZN</div>
+        <div className="stock-symbol absolute top-80 right-1/2">NVDA</div>
+        <div className="stock-symbol absolute bottom-60 left-1/5">META</div>
+        <div className="stock-symbol absolute top-96 left-1/6">NFLX</div>
+        
+        {/* Candlestick Patterns */}
+        <div className="candlestick absolute top-80 left-16 text-green-500">
+          <div className="body h-6"></div>
+          <div className="wick"></div>
+        </div>
+        
+        <div className="candlestick absolute top-72 right-32 text-red-500">
+          <div className="body h-4"></div>
+          <div className="wick"></div>
+        </div>
+        
+        <div className="candlestick absolute bottom-64 left-1/2 text-blue-500">
+          <div className="body h-5"></div>
+          <div className="wick"></div>
+        </div>
+        
+        <div className="candlestick absolute top-40 left-3/4 text-purple-500">
+          <div className="body h-3"></div>
+          <div className="wick"></div>
+        </div>
+        
+        <div className="candlestick absolute bottom-80 right-1/6 text-orange-500">
+          <div className="body h-4"></div>
+          <div className="wick"></div>
+        </div>
+        
+        {/* Additional Stock Chart Lines */}
+        <svg className="absolute top-16 right-1/4 w-24 h-16" viewBox="0 0 100 60" fill="none">
+          <path d="M0 45 L20 35 L40 40 L60 25 L80 30 L100 20" stroke="#06b6d4" strokeWidth="1.5" fill="none"/>
+          <circle cx="20" cy="35" r="1.5" fill="#06b6d4"/>
+          <circle cx="40" cy="40" r="1.5" fill="#06b6d4"/>
+          <circle cx="60" cy="25" r="1.5" fill="#06b6d4"/>
+          <circle cx="80" cy="30" r="1.5" fill="#06b6d4"/>
+          <circle cx="100" cy="20" r="1.5" fill="#06b6d4"/>
+        </svg>
+        
+        <svg className="absolute top-72 left-1/5 w-20 h-14" viewBox="0 0 100 60" fill="none">
+          <path d="M0 40 L25 30 L50 35 L75 25 L100 20" stroke="#ec4899" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="30" r="1.5" fill="#ec4899"/>
+          <circle cx="50" cy="35" r="1.5" fill="#ec4899"/>
+          <circle cx="75" cy="25" r="1.5" fill="#ec4899"/>
+          <circle cx="100" cy="20" r="1.5" fill="#ec4899"/>
+        </svg>
+        
+        <svg className="absolute bottom-32 right-1/3 w-28 h-18" viewBox="0 0 100 60" fill="none">
+          <path d="M0 35 L33 25 L66 40 L100 30" stroke="#10b981" strokeWidth="1.5" fill="none"/>
+          <circle cx="33" cy="25" r="1.5" fill="#10b981"/>
+          <circle cx="66" cy="40" r="1.5" fill="#10b981"/>
+          <circle cx="100" cy="30" r="1.5" fill="#10b981"/>
+        </svg>
+        
+        <svg className="absolute top-48 left-2/3 w-22 h-16" viewBox="0 0 100 60" fill="none">
+          <path d="M0 30 L25 40 L50 20 L75 35 L100 25" stroke="#f97316" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="40" r="1.5" fill="#f97316"/>
+          <circle cx="50" cy="20" r="1.5" fill="#f97316"/>
+          <circle cx="75" cy="35" r="1.5" fill="#f97316"/>
+          <circle cx="100" cy="25" r="1.5" fill="#f97316"/>
+        </svg>
+        
+        <svg className="absolute bottom-16 left-1/3 w-26 h-20" viewBox="0 0 100 60" fill="none">
+          <path d="M0 45 L20 35 L40 45 L60 30 L80 40 L100 25" stroke="#8b5cf6" strokeWidth="1.5" fill="none"/>
+          <circle cx="20" cy="35" r="1.5" fill="#8b5cf6"/>
+          <circle cx="40" cy="45" r="1.5" fill="#8b5cf6"/>
+          <circle cx="60" cy="30" r="1.5" fill="#8b5cf6"/>
+          <circle cx="80" cy="40" r="1.5" fill="#8b5cf6"/>
+          <circle cx="100" cy="25" r="1.5" fill="#8b5cf6"/>
+        </svg>
+        
+        <svg className="absolute top-88 right-1/6 w-24 h-18" viewBox="0 0 100 60" fill="none">
+          <path d="M0 40 L25 30 L50 40 L75 25 L100 35" stroke="#059669" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="30" r="1.5" fill="#059669"/>
+          <circle cx="50" cy="40" r="1.5" fill="#059669"/>
+          <circle cx="75" cy="25" r="1.5" fill="#059669"/>
+          <circle cx="100" cy="35" r="1.5" fill="#059669"/>
+        </svg>
+        
+        <svg className="absolute bottom-48 left-1/6 w-20 h-14" viewBox="0 0 100 60" fill="none">
+          <path d="M0 35 L33 25 L66 35 L100 20" stroke="#dc2626" strokeWidth="1.5" fill="none"/>
+          <circle cx="33" cy="25" r="1.5" fill="#dc2626"/>
+          <circle cx="66" cy="35" r="1.5" fill="#dc2626"/>
+          <circle cx="100" cy="20" r="1.5" fill="#dc2626"/>
+        </svg>
+        
+        <svg className="absolute top-32 right-1/2 w-26 h-18" viewBox="0 0 100 60" fill="none">
+          <path d="M0 30 L25 40 L50 25 L75 35 L100 20" stroke="#0891b2" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="40" r="1.5" fill="#0891b2"/>
+          <circle cx="50" cy="25" r="1.5" fill="#0891b2"/>
+          <circle cx="75" cy="35" r="1.5" fill="#0891b2"/>
+          <circle cx="100" cy="20" r="1.5" fill="#0891b2"/>
+        </svg>
+        
+        {/* More Stock Chart Lines */}
+        <svg className="absolute top-56 left-1/4 w-20 h-16" viewBox="0 0 100 60" fill="none">
+          <path d="M0 40 L33 30 L66 35 L100 25" stroke="#7c3aed" strokeWidth="1.5" fill="none"/>
+          <circle cx="33" cy="30" r="1.5" fill="#7c3aed"/>
+          <circle cx="66" cy="35" r="1.5" fill="#7c3aed"/>
+          <circle cx="100" cy="25" r="1.5" fill="#7c3aed"/>
+        </svg>
+        
+        <svg className="absolute bottom-24 right-1/5 w-22 h-16" viewBox="0 0 100 60" fill="none">
+          <path d="M0 35 L25 45 L50 30 L75 40 L100 20" stroke="#ea580c" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="45" r="1.5" fill="#ea580c"/>
+          <circle cx="50" cy="30" r="1.5" fill="#ea580c"/>
+          <circle cx="75" cy="40" r="1.5" fill="#ea580c"/>
+          <circle cx="100" cy="20" r="1.5" fill="#ea580c"/>
+        </svg>
+        
+        <svg className="absolute top-80 left-1/2 w-24 h-18" viewBox="0 0 100 60" fill="none">
+          <path d="M0 45 L20 35 L40 40 L60 30 L80 35 L100 25" stroke="#be185d" strokeWidth="1.5" fill="none"/>
+          <circle cx="20" cy="35" r="1.5" fill="#be185d"/>
+          <circle cx="40" cy="40" r="1.5" fill="#be185d"/>
+          <circle cx="60" cy="30" r="1.5" fill="#be185d"/>
+          <circle cx="80" cy="35" r="1.5" fill="#be185d"/>
+          <circle cx="100" cy="25" r="1.5" fill="#be185d"/>
+        </svg>
+        
+        <svg className="absolute bottom-40 right-2/3 w-20 h-14" viewBox="0 0 100 60" fill="none">
+          <path d="M0 30 L25 40 L50 25 L75 35 L100 20" stroke="#0d9488" strokeWidth="1.5" fill="none"/>
+          <circle cx="25" cy="40" r="1.5" fill="#0d9488"/>
+          <circle cx="50" cy="25" r="1.5" fill="#0d9488"/>
+          <circle cx="75" cy="35" r="1.5" fill="#0d9488"/>
+          <circle cx="100" cy="20" r="1.5" fill="#0d9488"/>
+        </svg>
+        
+        <svg className="absolute top-24 left-1/6 w-18 h-14" viewBox="0 0 100 60" fill="none">
+          <path d="M0 35 L33 25 L66 35 L100 20" stroke="#c2410c" strokeWidth="1.5" fill="none"/>
+          <circle cx="33" cy="25" r="1.5" fill="#c2410c"/>
+          <circle cx="66" cy="35" r="1.5" fill="#c2410c"/>
+          <circle cx="100" cy="20" r="1.5" fill="#c2410c"/>
+        </svg>
+        
+        <svg className="absolute bottom-56 left-2/5 w-24 h-16" viewBox="0 0 100 60" fill="none">
+          <path d="M0 40 L20 30 L40 35 L60 25 L80 30 L100 20" stroke="#a855f7" strokeWidth="1.5" fill="none"/>
+          <circle cx="20" cy="30" r="1.5" fill="#a855f7"/>
+          <circle cx="40" cy="35" r="1.5" fill="#a855f7"/>
+          <circle cx="60" cy="25" r="1.5" fill="#a855f7"/>
+          <circle cx="80" cy="30" r="1.5" fill="#a855f7"/>
+          <circle cx="100" cy="20" r="1.5" fill="#a855f7"/>
+        </svg>
+        
+        {/* 3 Big and Thick Stock Chart Lines */}
+        <svg className="absolute top-20 left-10 w-96 h-48 opacity-70" viewBox="0 0 400 200" fill="none">
+          <path d="M0 150 L50 120 L100 140 L150 100 L200 130 L250 80 L300 110 L350 90 L400 70" stroke="#22c55e" strokeWidth="8" fill="none" strokeLinecap="round"/>
+          <circle cx="50" cy="120" r="6" fill="#22c55e"/>
+          <circle cx="100" cy="140" r="6" fill="#22c55e"/>
+          <circle cx="150" cy="100" r="6" fill="#22c55e"/>
+          <circle cx="200" cy="130" r="6" fill="#22c55e"/>
+          <circle cx="250" cy="80" r="6" fill="#22c55e"/>
+          <circle cx="300" cy="110" r="6" fill="#22c55e"/>
+          <circle cx="350" cy="90" r="6" fill="#22c55e"/>
+          <circle cx="400" cy="70" r="6" fill="#22c55e"/>
+        </svg>
+        
+        <svg className="absolute top-40 right-20 w-80 h-40 opacity-20" viewBox="0 0 300 150" fill="none">
+          <path d="M0 100 L60 80 L120 90 L180 60 L240 80 L300 50" stroke="#ef4444" strokeWidth="6" fill="none" strokeLinecap="round"/>
+          <circle cx="60" cy="80" r="5" fill="#ef4444"/>
+          <circle cx="120" cy="90" r="5" fill="#ef4444"/>
+          <circle cx="180" cy="60" r="5" fill="#ef4444"/>
+          <circle cx="240" cy="80" r="5" fill="#ef4444"/>
+          <circle cx="300" cy="50" r="5" fill="#ef4444"/>
+        </svg>
+        
+        <svg className="absolute bottom-20 left-1/2 w-72 h-36 opacity-20" viewBox="0 0 250 120" fill="none">
+          <path d="M0 80 L50 60 L100 70 L150 50 L200 60 L250 40" stroke="#3b82f6" strokeWidth="7" fill="none" strokeLinecap="round"/>
+          <circle cx="50" cy="60" r="5" fill="#3b82f6"/>
+          <circle cx="100" cy="70" r="5" fill="#3b82f6"/>
+          <circle cx="150" cy="50" r="5" fill="#3b82f6"/>
+          <circle cx="200" cy="60" r="5" fill="#3b82f6"/>
+          <circle cx="250" cy="40" r="5" fill="#3b82f6"/>
+        </svg>
+
+      
+      </div>
+      
       {/* Grid Background */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" style={{ zIndex: 2 }}></div>
       {/* Hero Section */}
