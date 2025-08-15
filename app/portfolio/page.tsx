@@ -239,9 +239,7 @@ export default function PortfolioPage() {
                   <MessageSquare className="h-5 w-5 text-green-600" />
                   AI Company Analysis
                 </CardTitle>
-                <CardDescription>
-                  Chat with AI about {selectedStock ? `${stockCompanies.find(s => s.symbol === selectedStock)?.name} (${selectedStock})` : "a selected company"}
-                </CardDescription>
+               
               </CardHeader>
                               <CardContent className="space-y-2">
                                     {/* Chat Interface */}
