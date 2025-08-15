@@ -244,7 +244,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
           {/* Chart Section - 70% of screen (7/10 columns) */}
           <div className="xl:col-span-7">
             <Card className="bg-white border-0 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 pb-4">
+              <CardHeader className="bg-gradient-to-r from-gray-50 to-white border-gray-100 ">
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
@@ -267,7 +267,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="p-6 pt-4">
+              <CardContent className="">
                 {isLoadingCurrent ? (
                   <div className="min-h-[300px] flex items-center justify-center">
                     <div className="text-center space-y-4">
@@ -307,6 +307,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                           tickFormatter={(value) => `$${value.toFixed(2)}`} 
                           tick={{ fontSize: 12, fill: '#6b7280', fontWeight: 500 }}
                           axisLine={{ stroke: '#e5e7eb' }}
+                          domain={['dataMin - 50', 'dataMax + 50']}
                         />
                         <ChartTooltip
                           content={
@@ -379,6 +380,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                           tickFormatter={(value) => `$${value.toFixed(2)}`} 
                           tick={{ fontSize: 12, fill: '#6b7280', fontWeight: 500 }}
                           axisLine={{ stroke: '#e5e7eb' }}
+                          domain={['dataMin - 50', 'dataMax + 50']}
                         />
                         <ChartTooltip
                           content={
@@ -503,20 +505,20 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
               </div>
 
               {/* Prediction Parameters Section - 30% of screen (3/10 columns) */}
-              <div className="xl:col-span-3 space-y-6 xl:sticky xl:top-6 xl:self-start">
+              <div className="xl:col-span-3 space-y-2 xl:sticky xl:top-6 xl:self-start">
             {/* Stock Selection Card */}
-            <Card className="bg-white border-0 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 pb-6">
+            <Card className="bg-white border-0 shadow-xl  overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 pb-3">
                 <CardTitle className="text-xl pt-4 font-bold text-white flex items-center gap-3">
                   <Target className="h-6 w-6 text-white" />
                   Stock Selection
                 </CardTitle>
-                <CardDescription className="text-blue-100">
+                <CardDescription className="text-xs text-blue-100">
                         Choose a company to analyze and predict future trends
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="mx-auto">
-                      <div className="space-y-4">
+                      <div className="space-y-2">
                         <Label htmlFor="stock-select" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                           <span>Select Company</span>
                           <span className="text-xs bg-blue-100 text-blue-700 px-2  py-0.5 rounded-full">Required</span>
@@ -531,7 +533,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
           fetchCurrentStockData(value)
         }}
               >
-          <SelectTrigger className="h-10 px-3 text-sm border border-gray-300 rounded-md bg-white text-gray-900 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+          <SelectTrigger className="h-10 px-3 text-sm border border-gray-300 rounded-md bg-white text-gray-900 hover:border-blue-500! focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
             <SelectValue className="text-gray-700" placeholder="Select stock" />
           </SelectTrigger>
 
@@ -540,11 +542,11 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
               <SelectItem 
                 key={stock.symbol} 
                 value={stock.symbol}
-                className="px-3 py-2 text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:text-blue-700 data-[state=checked]:bg-blue-50 data-[state=checked]:text-blue-700 cursor-pointer transition-colors"
+                className="px-3 py-2 text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:text-blue-700! data-[state=checked]:bg-blue-50 data-[state=checked]:text-blue-700 cursor-pointer transition-colors"
               >
                 <div className="flex flex-col  gap-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold w-30 text-lg">{stock.symbol}</span>
+                    <span className="font-medium w-30 text-lg">{stock.symbol}</span>
                    
                   </div>
                  
@@ -559,8 +561,8 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
 
             {/* Prediction Parameters Card */}
             <Card className="bg-white border-0 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100 pb-4">
-                <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100 ">
+                <CardTitle className="pt-4 text-lg font-bold text-gray-900 flex items-center gap-2">
                   <Zap className="h-5 w-5 text-purple-600" />
                   Prediction Parameters
                 </CardTitle>
@@ -568,7 +570,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   Configure your analysis settings
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-6 pt-4 space-y-6">
+              <CardContent className="px-6 space-y-6">
                 {/* Timeframe Selection */}
                 <div className="space-y-3">
                   <Label htmlFor="months" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
@@ -582,7 +584,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     max="12"
                     value={months}
                     onChange={(e) => setMonths(Number(e.target.value))}
-                    className="h-12 text-sm text-gray-900 border-gray-200 focus:border-purple-500 focus:ring-purple-500 bg-gray-50 hover:bg-white transition-colors"
+                    className="h-6 text-sm text-gray-900 border-gray-200 focus:border-purple-500! bg-gray-50 hover:bg-white transition-colors"
                   />
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
@@ -616,7 +618,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                           placeholder={`News item ${index + 1}...`}
                           value={news}
                           onChange={(e) => updateNewsItem(index, e.target.value)}
-                          className="min-h-[60px] py-3 px-4 text-sm text-gray-900 border-gray-200 focus:border-green-500 focus:ring-green-500 bg-gray-50 hover:bg-white transition-colors resize-none rounded-lg"
+                          className="min-h-[30px] py-1 px-4 text-sm text-gray-900 border-gray-200 focus:border-green-500!  bg-gray-50 hover:bg-white transition-colors resize-none rounded-lg"
                         />
                         {newsList.length > 1 && (
                           <Button
