@@ -531,27 +531,23 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
           fetchCurrentStockData(value)
         }}
               >
-          <SelectTrigger className="h-14 px-4 text-base border border-gray-200 rounded-2xl bg-white text-gray-900 shadow-sm hover:shadow-md focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200">
-            <SelectValue className="text-gray-600 font-medium" placeholder="Choose a stock to analyze" />
+          <SelectTrigger className="h-10 px-3 text-sm border border-gray-300 rounded-md bg-white text-gray-900 hover:border-blue-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors">
+            <SelectValue className="text-gray-700" placeholder="Select stock" />
           </SelectTrigger>
 
-          <SelectContent className="bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden w-100 max-h-[400px]">
+          <SelectContent className="bg-white border border-gray-300 shadow-sm rounded-md overflow-hidden max-h-72">
             {stockCompanies.map((stock) => (
               <SelectItem 
                 key={stock.symbol} 
                 value={stock.symbol}
-                className="p-4 text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:text-blue-700 
-                          data-[state=checked]:bg-blue-50 data-[state=checked]:text-blue-700 
-                          cursor-pointer border-b  border-gray-100 last:border-0 transition-colors"
+                className="px-3 py-2 text-gray-900 hover:bg-blue-50 focus:bg-blue-50 focus:text-blue-700 data-[state=checked]:bg-blue-50 data-[state=checked]:text-blue-700 cursor-pointer transition-colors"
               >
                 <div className="flex flex-col  gap-1">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold w-30 text-lg">{stock.symbol}</span>
-                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full border border-gray-200">
-                      {stock.sector}
-                    </span>
+                   
                   </div>
-                  <span className="text-sm text-gray-500">{stock.name}</span>
+                 
                 </div>
               </SelectItem>
             ))}
