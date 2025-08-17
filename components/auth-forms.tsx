@@ -54,24 +54,31 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
   }
 
   return (
-    <div className="min-h-[80vh] flex bg-white">
+    <div className="min-h-[90vh] flex bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Left Side - Website Branding */}
-      <div className="w-2/5 bg-white flex items-center justify-center p-8">
+      <div className="w-2/5 flex items-center justify-center p-8 relative z-10">
         <div className="text-center max-w-lg">
           <div className="flex items-center justify-center mb-6">
-            <div className="bg-gray-900 rounded-full p-3 mr-3">
+            <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 mr-3 border border-white/30">
               <TrendingUp className="h-9 w-9 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900">StockPredict AI</h1>
+            <h1 className="text-4xl font-bold text-white">StockPredict AI</h1>
           </div>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-2xl font-semibold text-white/90 mb-4">
             Predict the Future of Stocks
           </h2>
-          <p className="text-gray-600 text-lg leading-relaxed">
+          <p className="text-white/80 text-lg leading-relaxed">
             Harness the power of AI to make informed investment decisions. 
             Get accurate stock predictions based on news sentiment and market analysis.
           </p>
-          <div className="mt-8 flex items-center justify-center space-x-4 text-gray-500">
+          <div className="mt-8 flex items-center justify-center space-x-4 text-white/70">
             <div className="flex items-center">
               <BarChart3 className="h-5 w-5 mr-2" />
               <span className="text-sm">Real-time Analysis</span>
@@ -85,17 +92,17 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
       </div>
 
       {/* Right Side - Auth Form */}
-      <div className="w-3/5 bg-white  flex items-center justify-center ">
-        <Card className="w-full max-w-lg bg-white border  border-gray-200 shadow-lg">
-        <div className="flex items-center justify-center">
-          <div className="bg-gray-900 w-15 h-15 rounded-full p-3 mr-3">
-            <TrendingUp className="h-9 w-9 text-white" />
+      <div className="w-3/5 flex items-center justify-center relative z-10">
+        <Card className="w-full max-w-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
+          <div className="flex items-center justify-center p-6">
+            <div className="bg-white/20 backdrop-blur-sm w-12 h-12 rounded-full p-2 mr-3 border border-white/30">
+              <TrendingUp className="h-7 w-7 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">StockPredict AI</h2>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">StockPredict AI</h2>
-        </div>
           <CardHeader className="text-center py-1 px-9">
-            <CardTitle className="text-2xl text-gray-900">{mode === "login" ? "Welcome Back" : "Create Account"}</CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardTitle className="text-2xl text-white">{mode === "login" ? "Welcome Back" : "Create Account"}</CardTitle>
+            <CardDescription className="text-white/80">
               {mode === "login" ? "Sign in to access your stock predictions" : "Join thousands of smart investors"}
             </CardDescription>
           </CardHeader>
@@ -103,7 +110,7 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === "signup" && (
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-700">Full Name</Label>
+                  <Label htmlFor="name" className="text-white/90">Full Name</Label>
                   <Input
                     id="name"
                     type="text"
@@ -111,13 +118,13 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
-                    className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-900 focus:ring-gray-900"
+                    className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm"
                   />
                 </div>
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700">Email</Label>
+                <Label htmlFor="email" className="text-white/90">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -125,12 +132,12 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-900 focus:ring-gray-900"
+                  className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700">Password</Label>
+                <Label htmlFor="password" className="text-white/90">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -140,26 +147,26 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     required
                     minLength={6}
-                    className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-900 focus:ring-gray-900"
+                    className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-gray-100 text-gray-500 cursor-pointer"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-white/20 text-white/70 cursor-pointer"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
-                {mode === "signup" && <p className="text-sm text-gray-500">Password must be at least 6 characters</p>}
+                {mode === "signup" && <p className="text-sm text-white/70">Password must be at least 6 characters</p>}
               </div>
 
               {error && (
-                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">{error}</div>
+                <div className="p-3 text-sm text-red-200 bg-red-500/20 border border-red-400/30 rounded-md backdrop-blur-sm">{error}</div>
               )}
 
-              <Button type="submit" className="w-full bg-gray-900 text-white hover:bg-gray-800 cursor-pointer" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm cursor-pointer transition-all duration-300" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -174,11 +181,11 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-white/70">
                 {mode === "login" ? "Don't have an account?" : "Already have an account?"}
                 <Button
                   variant="link"
-                  className="p-0 ml-1 h-auto font-normal text-gray-900 hover:text-gray-700 underline cursor-pointer"
+                  className="p-0 ml-1 h-auto font-normal text-white hover:text-white/80 underline cursor-pointer"
                   onClick={() => onModeChange(mode === "login" ? "signup" : "login")}
                 >
                   {mode === "login" ? "Sign up" : "Sign in"}

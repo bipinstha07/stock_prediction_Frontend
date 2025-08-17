@@ -89,73 +89,73 @@ export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: Landin
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-blue-50 via-white to-blue-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Brain className="h-8 w-8 text-blue-600" />
+                <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <Brain className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">AI-Powered Analysis</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-blue-700 transition-all duration-300">AI-Powered Analysis</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Advanced machine learning algorithms analyze news sentiment and market patterns in real-time
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-green-50 via-white to-green-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <BarChart3 className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Interactive Charts</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-green-700 transition-all duration-300">Interactive Charts</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Beautiful, responsive charts with detailed analytics and price predictions
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-purple-50 via-white to-purple-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Zap className="h-8 w-8 text-purple-600" />
+                <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <Zap className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Real-time Predictions</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-purple-700 transition-all duration-300">Real-time Predictions</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Get instant predictions based on the latest news and market developments
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-red-50 via-white to-red-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Shield className="h-8 w-8 text-red-600" />
+                <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <Shield className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Risk Assessment</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-red-700 transition-all duration-300">Risk Assessment</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Understand potential risks and confidence levels for each prediction
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-orange-50 via-white to-orange-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-orange-600" />
+                <div className="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <Users className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Expert Insights</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-orange-700 transition-all duration-300">Expert Insights</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Access insights from financial experts and market analysts
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="bg-white border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl">
+            <Card className="group bg-gradient-to-br from-indigo-50 via-white to-indigo-100 border-0 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out rounded-xl overflow-hidden cursor-pointer">
               <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="h-8 w-8 text-indigo-600" />
+                <div className="w-16 h-16 bg-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 ease-out">
+                  <TrendingUp className="h-8 w-8 text-white group-hover:scale-110 transition-all duration-300 ease-out" />
                 </div>
-                <CardTitle className="text-xl text-gray-900">Portfolio Tracking</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle className="text-xl text-gray-900 group-hover:text-indigo-700 transition-all duration-300">Portfolio Tracking</CardTitle>
+                <CardDescription className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                   Track multiple stocks and build comprehensive investment strategies
                 </CardDescription>
               </CardHeader>
