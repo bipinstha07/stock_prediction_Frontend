@@ -12,7 +12,9 @@ interface LandingPageProps {
 
 export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-white">
+    <>
+          <div className="min-h-screen bg-gradient-to-r from-purple-200 via-blue-200 to-pink-200">
+    
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-6">
         <div className="max-w-6xl mx-auto text-center">
@@ -75,7 +77,7 @@ export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: Landin
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -209,7 +211,7 @@ export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: Landin
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-gray-200">
+      <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Transform Your Investment Strategy Today
@@ -241,5 +243,6 @@ export function LandingPage({ onLoginClick, onSignupClick, onDemoClick }: Landin
         </div>
       </section>
     </div>
+    </>
   )
 }

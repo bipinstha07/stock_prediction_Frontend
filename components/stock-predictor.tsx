@@ -229,9 +229,9 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-[1400px] mx-auto pt-1">
         {isDemo && (
-          <Alert className="mb-6 bg-blue-50 text-blue-700 border-blue-200 shadow-sm">
+          <Alert className="mb-6 bg-blue-50 text-blue-900! border-blue-200 shadow-sm">
             <Info className="h-4 w-4" />
-            <AlertDescription className="text-sm font-medium">
+            <AlertDescription className="text-sm text-blue-900! font-medium">
               Demo mode - showing sample data for demonstration purposes
             </AlertDescription>
           </Alert>
