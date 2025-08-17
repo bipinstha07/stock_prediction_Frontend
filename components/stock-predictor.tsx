@@ -380,12 +380,12 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                             return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
                           }}
                           interval={Math.max(0, Math.floor(currentStockData.length / 8))}
-                          tick={{ fontSize: 12, stroke: '#6b7280', fontWeight: 100 }}
+                          tick={{ fontSize: 12, stroke: 'white', fontWeight: 100 }}
                           axisLine={{ stroke: 'gray' }}
                         />
                         <YAxis 
                           tickFormatter={(value) => `$${value.toFixed(2)}`} 
-                          tick={{ fontSize: 12, stroke: '#6b7280', fontWeight: 100 }}
+                          tick={{ fontSize: 12, stroke: 'white', fontWeight: 100 }}
                           axisLine={{ stroke: 'gray' }}
                           domain={['dataMin - 50', 'dataMax + 50']}
                         />
@@ -611,7 +611,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       variant="outline"
                       size="sm"
                       onClick={addNewsItem}
-                      className="flex items-center gap-2 py-2 px-3 text-sm border-green-400/30 hover:bg-green-500/30 hover:text-white hover:border-green-400 transition-all duration-200 cursor-pointer rounded-lg backdrop-blur-sm"
+                      className="flex items-center gap-2 py-2 px-3 bg-green-500/30 text-sm border-purple-400/30 hover:bg-purple-500/30 hover:text-white hover:border-purple-400 transition-all duration-200 cursor-pointer rounded-lg backdrop-blur-sm"
                     >
                       <Plus className="h-4 w-4" />
                       Add News
@@ -633,9 +633,9 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                             variant="outline"
                             size="sm"
                             onClick={() => removeNewsItem(index)}
-                            className="absolute top-2 right-2 w-6 h-6 p-0 border-red-400/30 hover:bg-red-500/30 hover:text-white hover:border-red-400 transition-all duration-200 cursor-pointer rounded-full opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+                            className="absolute top-1 right-2 w-6 h-6 p-0 border-red-400/30 hover:bg-red-500/30 hover:text-white hover:border-red-400 transition-all duration-200 cursor-pointer rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-red-500/70 backdrop-blur-sm"
                           >
-                            <X className="h-3 w-3" />
+                            <X className="h-3 text-red-600 w-3" />
                           </Button>
                         )}
                       </div>

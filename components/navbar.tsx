@@ -63,12 +63,15 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
   }, [])
 
   return (
-    <nav className="border-b border-gray-200 bg-gradient-to-r from-purple-200 via-blue-200 to-pink-200 shadow-sm">
+    <nav className="bg-gradient-to-r from-purple-900/90 via-blue-900/90 to-pink-900/90 backdrop-blur-md shadow-lg relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
-            <TrendingUp className="h-8 w-8 text-blue-600" />
-            <span className="text-xl font-bold text-gray-900">StockPredict AI</span>
+          <div 
+            className="flex items-center space-x-2 cursor-pointer" 
+            onClick={() => router.push('/')}
+          >
+            <TrendingUp className="h-8 w-8 text-white" />
+            <span className="text-xl font-bold text-white">StockPredict AI</span>
           </div>
           
 
@@ -76,12 +79,12 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <span className="text-gray-700 font-medium">Welcome, {user.name}</span>
+                <span className="text-white/90 font-medium">Welcome, {user.name}</span>
                 <div className="relative" ref={accountDropdownRef}>
                   <Button 
                     variant="ghost" 
                     onClick={() => setShowAccountDropdown(!showAccountDropdown)}
-                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer"
+                    className="text-white/90 hover:text-white hover:bg-white/20 flex items-center space-x-2 cursor-pointer backdrop-blur-sm"
                   >
                     <User className="h-4 w-4" />
                     <span>Account</span>
@@ -89,36 +92,36 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
                   </Button>
                   
                   {showAccountDropdown && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <div className="absolute right-0 mt-2 w-48 bg-purple-900/95 backdrop-blur-md border border-white/30 rounded-md shadow-lg z-50">
                       <div className="py-1">
                         <button
                           onClick={() => handleNavigation('profile')}
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer"
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/20 flex items-center space-x-2 cursor-pointer transition-colors"
                         >
-                          <User className="h-4 w-4 text-gray-600" />
+                          <User className="h-4 w-4 text-white/80" />
                           <span>Profile</span>
                         </button>
                         <button
                           onClick={() => handleNavigation('portfolio')}
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer"
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/20 flex items-center space-x-2 cursor-pointer transition-colors"
                         >
-                          <Briefcase className="h-4 w-4 text-gray-600" />
+                          <Briefcase className="h-4 w-4 text-white/80" />
                           <span>Portfolio</span>
                         </button>
                         <button
                           onClick={() => handleNavigation('settings')}
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer"
+                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/20 flex items-center space-x-2 cursor-pointer transition-colors"
                         >
-                          <Settings className="h-4 w-4 text-gray-600" />
+                          <Settings className="h-4 w-4 text-white/80" />
                           <span>Settings</span>
                         </button>
-                        <div className="border-t border-gray-200 my-1"></div>
+                        <div className="border-t border-white/30 my-1"></div>
                         <button
                           onClick={() => {
                             setShowAccountDropdown(false)
                             setShowLogoutDialog(true)
                           }}
-                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2 cursor-pointer"
+                          className="w-full text-left px-4 py-2 text-sm text-red-300 hover:bg-red-500/20 flex items-center space-x-2 cursor-pointer transition-colors"
                         >
                           <LogOut className="h-4 w-4" />
                           <span>Logout</span>
@@ -130,21 +133,21 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
                 
                 {/* Logout Confirmation Dialog */}
                 <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-                  <AlertDialogContent className="bg-white border border-gray-200">
+                  <AlertDialogContent className="bg-white/20 backdrop-blur-md border border-white/30">
                     <AlertDialogHeader>
-                      <AlertDialogTitle className="text-gray-900">Confirm Logout</AlertDialogTitle>
-                      <AlertDialogDescription className="text-gray-700">
+                      <AlertDialogTitle className="text-white">Confirm Logout</AlertDialogTitle>
+                      <AlertDialogDescription className="text-white/80">
                         Are you sure you want to logout? You'll need to sign in again to access your account.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel 
                         onClick={() => setShowLogoutDialog(false)}
-                        className="text-white hover:text-gray-900 hover:border-gray-900 hover:bg-gray-100 cursor-pointer"
+                        className="text-white/80 hover:text-white hover:bg-white/20 hover:border-white/50 cursor-pointer backdrop-blur-sm"
                       >
                         Cancel
                       </AlertDialogCancel>
-                      <AlertDialogAction onClick={handleLogout} className="bg-gray-900 text-white hover:bg-red-500 hover:text-white hover:border-red-900 cursor-pointer">
+                      <AlertDialogAction onClick={handleLogout} className="bg-red-500/80 text-white hover:bg-red-600 hover:text-white border border-red-400/30 cursor-pointer backdrop-blur-sm">
                         Logout
                       </AlertDialogAction>
                     </AlertDialogFooter>
@@ -153,13 +156,13 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
               </>
             ) : (
               <>
-                <Button variant="ghost" onClick={onDemoClick} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
+                <Button variant="ghost" onClick={onDemoClick} className="text-white/90 hover:text-white hover:bg-white/20 cursor-pointer backdrop-blur-sm">
                   Try Demo
                 </Button>
-                <Button variant="ghost" onClick={onLoginClick} className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer">
+                <Button variant="ghost" onClick={onLoginClick} className="text-white/90 hover:text-white hover:bg-white/20 cursor-pointer backdrop-blur-sm">
                   Login
                 </Button>
-                <Button onClick={onSignupClick} className="bg-gray-900 hover:bg-white hover:text-black hover:border-gray-900 border-2 border-transparent text-white cursor-pointer">Sign Up</Button>
+                <Button onClick={onSignupClick} className="bg-white/20 hover:bg-white/30 text-white hover:text-white border border-white/30 hover:border-white/50 cursor-pointer backdrop-blur-sm">Sign Up</Button>
               </>
             )}
           </div>
