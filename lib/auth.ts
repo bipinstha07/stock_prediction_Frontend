@@ -6,12 +6,14 @@ interface User {
   id: string
   email: string
   name: string
+  address: string
+  number: string
 }
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
-  signup: (name: string, email: string, password: string) => Promise<boolean>
+  login: (email: string, password: string, userData?: any) => Promise<boolean>
+  signup: (name: string, email: string, password: string, userData?: any) => Promise<boolean>
   logout: () => void
   isLoading: boolean
 }
@@ -30,10 +32,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false)
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string, userData?: any): Promise<boolean> => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (email && password.length >= 6) {
-      const user = { id: "1", email, name: email.split("@")[0] }
+      // Use the userData from backend if provided, otherwise fallback to basic data
+      const user = userData ? {
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        address: userData.address || "",
+        number: userData.number || ""
+      } : { 
+        id: "1", 
+        email, 
+        name: email.split("@")[0],
+        address: "",
+        number: ""
+      }
       setUser(user)
       localStorage.setItem("user", JSON.stringify(user))
       return true
@@ -41,10 +56,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return false
   }
 
-  const signup = async (name: string, email: string, password: string): Promise<boolean> => {
+  const signup = async (name: string, email: string, password: string, userData?: any): Promise<boolean> => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (name && email && password.length >= 6) {
-      const user = { id: "1", email, name }
+      // Use the userData from backend if provided, otherwise fallback to basic data
+      const user = userData ? {
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        address: userData.address || "",
+        number: userData.number || ""
+      } : { 
+        id: "1", 
+        email, 
+        name,
+        address: "",
+        number: ""
+      }
       setUser(user)
       localStorage.setItem("user", JSON.stringify(user))
       return true

@@ -34,19 +34,64 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
     setError("")
 
     try {
-      let success = false
       if (mode === "login") {
-        success = await login(formData.email, formData.password)
+        // Login: Get user by email
+        const response = await fetch(`http://localhost:8080/user/getUser/${formData.email}`)
+        
+        if (response.ok) {
+          const userData = await response.json()
+          // For now, we'll just check if user exists
+          // In a real app, you'd verify password on backend
+          if (userData && userData.email === formData.email) {
+            // Call the login function from auth context with user data
+            const success = await login(formData.email, formData.password, userData)
+            if (success) {
+              onSuccess()
+            } else {
+              setError("Invalid credentials")
+            }
+          } else {
+            setError("User not found")
+          }
+        } else if (response.status === 404) {
+          setError("User not found")
+        } else {
+          setError("Login failed. Please try again.")
+        }
       } else {
-        success = await signup(formData.name, formData.email, formData.password)
-      }
+        // Signup: Create new user
+        const signupData = {
+          name: formData.name,
+          email: formData.email,
+          address: "", // Empty for now as per your requirement
+          number: ""   // Empty for now as per your requirement
+        }
 
-      if (success) {
-        onSuccess()
-      } else {
-        setError(mode === "login" ? "Invalid credentials" : "Failed to create account")
+        const response = await fetch(`http://localhost:8080/user/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(signupData)
+        })
+
+        if (response.ok) {
+          const newUser = await response.json()
+          // Call the signup function from auth context with user data
+          const success = await signup(formData.name, formData.email, formData.password, newUser)
+          if (success) {
+            onSuccess()
+          } else {
+            setError("Account created but login failed")
+          }
+        } else if (response.status === 409) {
+          setError("User with this email already exists")
+        } else {
+          setError("Failed to create account. Please try again.")
+        }
       }
     } catch (err) {
+      console.error('Auth error:', err)
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)

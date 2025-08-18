@@ -28,6 +28,8 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
     if (onLogout) {
       onLogout()
     }
+    // Redirect to home page after logout
+    router.push('/')
     setShowLogoutDialog(false)
   }
 
@@ -77,6 +79,15 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
 
 
           <div className="flex items-center space-x-4">
+            {/* Predict Now Button */}
+            <Button
+              variant="ghost"
+              onClick={() => router.push('/user')}
+              className="text-white/90 hover:text-white hover:bg-white/20 cursor-pointer backdrop-blur-sm"
+            >
+              Predict Now
+            </Button>
+            
             {user ? (
               <>
                 <span className="text-white/90 font-medium">Welcome, {user.name}</span>
@@ -106,7 +117,7 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
                           className="w-full text-left px-4 py-2 text-sm text-white hover:bg-white/20 flex items-center space-x-2 cursor-pointer transition-colors"
                         >
                           <Briefcase className="h-4 w-4 text-white/80" />
-                          <span>Portfolio</span>
+                          <span>AI Stock Analysis</span>
                         </button>
                         <button
                           onClick={() => handleNavigation('settings')}

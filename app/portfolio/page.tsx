@@ -154,7 +154,7 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 relative">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -200,9 +200,9 @@ export default function PortfolioPage() {
 
         <div className="grid grid-cols-1  lg:grid-cols-3 gap-6">
           {/* Left Sidebar - Stock Selection & Features */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-6 lg:self-start lg:h-fit">
             {/* Stock Selection */}
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-lg overflow-hidden">
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-lg ">
               <CardHeader className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 py-2 -mt-6">
                 <CardTitle className="text-base font-semibold text-white flex items-center gap-2">
                   <Target className="h-4 w-4 text-blue-400" />

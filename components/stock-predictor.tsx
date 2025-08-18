@@ -47,10 +47,11 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
     { symbol: "AMZN", name: "Amazon.com Inc.", sector: "E-commerce" }
   ]
 
-  // Automatically fetch Apple stock data when component mounts
+  // Generate dummy data for the last 2 months when component mounts
   useEffect(() => {
     if (stockSymbol) {
-      fetchCurrentStockData(stockSymbol)
+      const dummyData = generateDummyHistoricalData(stockSymbol)
+      setCurrentStockData(dummyData)
     }
   }, []) // Empty dependency array means this runs once on mount
 
@@ -88,6 +89,31 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
         date: date.toISOString().split("T")[0],
         price: Math.max(price, 10),
         index: i,
+      })
+    }
+
+    return data
+  }
+
+  const generateDummyHistoricalData = (symbol: string): PredictionData[] => {
+    const data: PredictionData[] = []
+    const basePrice = 150 + Math.random() * 100
+    const today = new Date()
+
+    // Generate data for the last 2 months (60 days)
+    for (let i = 60; i >= 0; i -= 1) {
+      const date = new Date(today)
+      date.setDate(date.getDate() - i)
+
+      const volatility = 0.015
+      const trend = 0.0005
+      const randomChange = (Math.random() - 0.5) * volatility
+      const price = basePrice * (1 + trend * (60 - i) + randomChange)
+
+      data.push({
+        date: date.toISOString().split("T")[0],
+        price: Math.max(price, 10),
+        index: 60 - i,
       })
     }
 
@@ -226,7 +252,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 relative ">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -262,14 +288,16 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       {predictionData.length > 0
                         ? `${months} month AI prediction for ${stockSymbol}`
                         : currentStockData.length > 0
-                        ? `Current market data for ${stockSymbol}`
-                        : "Select a stock to view current market data"}
+                        ? `Historical data for ${stockSymbol} (last 2 months) - Click "Get AI Prediction" for future forecasts`
+                        : "Select a stock to view historical data"}
                     </CardDescription>
                   </div>
                   {stockSymbol && (
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 rounded-full border border-green-400/30">
-                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      <span className="text-sm font-medium text-green-100">Live Data</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-500/20 rounded-full border border-blue-400/30">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      <span className="text-sm font-medium text-blue-100">
+                        {predictionData.length > 0 ? 'AI Prediction' : 'Historical Data'}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -509,13 +537,130 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     </CardContent>
                   </Card>
                 )}
+
+                {/* News Section */}
+                <Card className="bg-white/10 backdrop-blur-md border mt-5 border-white/20 shadow-xl rounded-2xl overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r -mt-6 from-blue-500/20 to-indigo-500/20 border-b border-blue-400/30">
+                    <CardTitle className="pt-4 text-lg font-bold text-white flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-blue-400" />
+                      Market News & Sentiment
+                    </CardTitle>
+                    <CardDescription className="text-white/80">
+                      Real-time market updates and analysis
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      {/* Sample News Items */}
+                      <div className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs text-white/60 mb-2">
+                              <span>Benzinga</span>
+                              <span>•</span>
+                              <span>4h ago</span>
+                            </div>
+                            <h4 className="text-sm font-medium text-white mb-2">
+                              Apple's Vision Pro Struggles To Gain Traction Amid Slow Release Of Immersive Video
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-red-400 font-medium">AAPL ▼ 0.68%</span>
+                              <span className="text-xs text-white/60">Apple Inc.</span>
+                            </div>
+                          </div>
+                          <div className="w-16 h-12 bg-gradient-to-br from-purple-400 to-blue-400 rounded-lg ml-4 flex-shrink-0"></div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs text-white/60 mb-2">
+                              <span>TipRanks</span>
+                              <span>•</span>
+                              <span>6h ago</span>
+                            </div>
+                            <h4 className="text-sm font-medium text-white mb-2">
+                              Disney's Marvel creating more content in U.K., WSJ reports
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-red-400 font-medium">DIS ▼ 0.62%</span>
+                              <span className="text-xs text-white/60">Walt Disney Co.</span>
+                            </div>
+                          </div>
+                          <div className="w-16 h-12 bg-gradient-to-br from-green-400 to-blue-400 rounded-lg ml-4 flex-shrink-0"></div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs text-white/60 mb-2">
+                              <span>Nasdaq</span>
+                              <span>•</span>
+                              <span>7h ago</span>
+                            </div>
+                            <h4 className="text-sm font-medium text-white mb-2">
+                              Guru Fundamental Report for CRWD
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-green-400 font-medium">CRWD ▲ 0.72%</span>
+                              <span className="text-xs text-white/60">CrowdStrike Holdings</span>
+                            </div>
+                          </div>
+                          <div className="w-16 h-12 bg-gradient-to-br from-pink-400 to-purple-400 rounded-lg ml-4 flex-shrink-0"></div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs text-white/60 mb-2">
+                              <span>MarketWatch</span>
+                              <span>•</span>
+                              <span>8h ago</span>
+                            </div>
+                            <h4 className="text-sm font-medium text-white mb-2">
+                              Tech stocks rally as AI optimism drives market sentiment
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-green-400 font-medium">NVDA ▲ 2.15%</span>
+                              <span className="text-xs text-white/60">NVIDIA Corporation</span>
+                            </div>
+                          </div>
+                          <div className="w-16 h-12 bg-gradient-to-br from-orange-400 to-red-400 rounded-lg ml-4 flex-shrink-0"></div>
+                        </div>
+                      </div>
+
+                      <div className="p-4 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-xs text-white/60 mb-2">
+                              <span>Yahoo Finance</span>
+                              <span>•</span>
+                              <span>9h ago</span>
+                            </div>
+                            <h4 className="text-sm font-medium text-white mb-2">
+                              Federal Reserve signals potential rate cuts in 2024
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-green-400 font-medium">SPY ▲ 0.85%</span>
+                              <span className="text-xs text-white/60">SPDR S&P 500 ETF</span>
+                            </div>
+                          </div>
+                          <div className="w-16 h-12 bg-gradient-to-br from-blue-400 to-green-400 rounded-lg ml-4 flex-shrink-0"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
                             {/* Prediction Parameters Section - 30% of screen (3/10 columns) */}
               <div className="xl:col-span-3 space-y-2 xl:sticky xl:top-6 mt-5  xl:self-start xl:h-fit">
                 {/* Stock Selection Card */}
                 <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-blue-600/80 -mt-6 to-indigo-600/80 pb-3 border border-blue-400/30">
+              <CardHeader className="bg-gradient-to-r from-blue-400/40 -mt-6 to-purple-300/40 pb-3 border border-blue-400/30">
                 <CardTitle className="text-xl pt-4 font-bold text-white flex items-center gap-3">
                   <Target className="h-6 w-6 text-white" />
                   Stock Selection
@@ -537,7 +682,9 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
           setSelectedStock(value)
           setPredictionData([])
           setError(null)
-          fetchCurrentStockData(value)
+          // Generate dummy data for the selected stock
+          const dummyData = generateDummyHistoricalData(value)
+          setCurrentStockData(dummyData)
         }}
               >
           <SelectTrigger className="h-10 px-3 text-sm border border-white/30 rounded-md bg-white/20 text-white placeholder:text-white/60 hover:border-blue-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 transition-colors backdrop-blur-sm">
