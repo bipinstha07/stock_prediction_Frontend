@@ -8,6 +8,7 @@ interface User {
   name: string
   address: string
   number: string
+  isPremium: boolean
 }
 
 interface AuthContextType {
@@ -41,14 +42,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: userData.email,
         name: userData.name,
         address: userData.address || "",
-        number: userData.number || ""
+        number: userData.number || "",
+        isPremium: Boolean(userData.isPremium || userData.premium) // Handle both isPremium and premium fields
       } : { 
         id: "1", 
         email, 
         name: email.split("@")[0],
         address: "",
-        number: ""
+        number: "",
+        isPremium: false
       }
+      
+      // Debug logging
+      console.log('Backend userData:', userData)
+      console.log('Processed user:', user)
+      console.log('isPremium value:', user.isPremium, 'Type:', typeof user.isPremium)
+      
       setUser(user)
       localStorage.setItem("user", JSON.stringify(user))
       return true
@@ -65,14 +74,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: userData.email,
         name: userData.name,
         address: userData.address || "",
-        number: userData.number || ""
+        number: userData.number || "",
+        isPremium: Boolean(userData.isPremium || userData.premium) // Handle both isPremium and premium fields
       } : { 
         id: "1", 
         email, 
         name,
         address: "",
-        number: ""
+        number: "",
+        isPremium: false
       }
+      
+      // Debug logging
+      console.log('Backend userData:', userData)
+      console.log('Processed user:', user)
+      console.log('isPremium value:', user.isPremium, 'Type:', typeof user.isPremium)
+      
       setUser(user)
       localStorage.setItem("user", JSON.stringify(user))
       return true

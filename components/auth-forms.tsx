@@ -40,6 +40,13 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
         
         if (response.ok) {
           const userData = await response.json()
+          
+          // Debug logging for backend response
+          console.log('🔍 AUTH FORMS - Backend Response:', userData)
+          console.log('🔍 AUTH FORMS - isPremium from backend:', userData.isPremium)
+          console.log('🔍 AUTH FORMS - isPremium type:', typeof userData.isPremium)
+          console.log('🔍 AUTH FORMS - Full userData JSON:', JSON.stringify(userData, null, 2))
+          
           // For now, we'll just check if user exists
           // In a real app, you'd verify password on backend
           if (userData && userData.email === formData.email) {
