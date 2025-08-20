@@ -17,6 +17,19 @@ interface NewsStatementDto {
   months: number
 }
 
+interface CompanyStockPriceDto {
+  date: string
+  price: number
+  // Add other fields that might be returned by the API
+}
+
+// Alternative interface for different response formats
+interface StockDataItem {
+  date: string
+  price: number
+  [key: string]: any // Allow for additional fields
+}
+
 interface PredictionData {
   date: string
   price: number
@@ -38,6 +51,65 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
   const [isLoadingCurrent, setIsLoadingCurrent] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Helper function to parse stock data from various response formats
+  const parseStockData = (rawData: any): PredictionData[] => {
+    console.log('Parsing stock data:', rawData)
+    
+    if (!Array.isArray(rawData)) {
+      console.error('Expected array but got:', typeof rawData)
+      return []
+    }
+    
+    return rawData
+      .map((item: any, index: number) => {
+        try {
+          // Handle different response formats
+          let dateStr = item.date
+          let price = item.price
+          
+          // If the response has a different structure, try to extract values
+          if (typeof item === 'string') {
+            console.log('Item is string:', item)
+            // Try to parse string representation like "{date=2025-08-19, price=509.77}"
+            const match = item.match(/date=([^,]+),\s*price=([^}]+)/)
+            if (match) {
+              dateStr = match[1]
+              price = match[2]
+            } else {
+              return null
+            }
+          }
+          
+          // Ensure price is a number
+          if (typeof price === 'string') {
+            price = parseFloat(price.replace(/[^\d.-]/g, ''))
+          }
+          
+          // Ensure date is properly formatted
+          if (dateStr) {
+            // Handle different date formats
+            const date = new Date(dateStr)
+            if (isNaN(date.getTime())) {
+              console.warn('Invalid date format:', dateStr)
+              return null
+            }
+            dateStr = date.toISOString().split('T')[0] // Format as YYYY-MM-DD
+          }
+          
+          return {
+            date: dateStr,
+            price: Number(price),
+            index: index,
+          }
+        } catch (error) {
+          console.error('Error parsing item:', item, error)
+          return null
+        }
+      })
+      .filter((item: PredictionData | null): item is PredictionData => item !== null) // Remove null items
+      .sort((a: PredictionData, b: PredictionData) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  }
+
   // Predefined stock companies
   const stockCompanies = [
     { symbol: "AAPL", name: "Apple Inc.", sector: "Technology" },
@@ -47,9 +119,11 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
     { symbol: "AMZN", name: "Amazon.com Inc.", sector: "E-commerce" }
   ]
 
-  // Generate dummy data for the last 2 months when component mounts
+  // Fetch real stock data when component mounts
   useEffect(() => {
-    if (stockSymbol) {
+    if (stockSymbol && !isDemo) {
+      fetchCurrentStockData(stockSymbol)
+    } else if (stockSymbol && isDemo) {
       const dummyData = generateDummyHistoricalData(stockSymbol)
       setCurrentStockData(dummyData)
     }
@@ -131,36 +205,26 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
         setCurrentStockData(demoData)
       } else {
         try {
-          // Real API call for current stock data
-          const requestBody: NewsStatementDto = {
-            news: ["Current market conditions"],
-            months: 1, // Get 1 month of current data
-          }
-
-          const response = await fetch(`http://localhost:8080/user/stock/${symbol}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          })
+          // Real API call for current stock data using the new endpoint
+          const response = await fetch(`http://localhost:8080/user/stock/getByCode/${symbol}`)
 
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
           }
 
           const data = await response.json()
+          console.log('Raw API response from fetchCurrentStockData:', data) // Debug log
 
-          // Process current stock data
-          const currentData: PredictionData[] = data
-            .map((item: any, index: number) => ({
-              date: item.date,
-              price: Number(item.price),
-              index: index,
-            }))
-            .sort((a: PredictionData, b: PredictionData) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          // Use the helper function to parse the data
+          const currentData = parseStockData(data)
 
+          if (currentData.length === 0) {
+            throw new Error('No valid stock data found in the response')
+          }
+
+          console.log('Parsed current data:', currentData)
           setCurrentStockData(currentData)
+          setError(null) // Clear any previous errors
         } catch (apiError) {
           // If API fails, fall back to demo data
           console.warn("API call failed for current data, falling back to demo data:", apiError)
@@ -288,15 +352,15 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       {predictionData.length > 0
                         ? `${months} month AI prediction for ${stockSymbol}`
                         : currentStockData.length > 0
-                        ? `Historical data for ${stockSymbol} (last 2 months) - Click "Get AI Prediction" for future forecasts`
-                        : "Select a stock to view historical data"}
+                        ? `Real-time market data for ${stockSymbol} - Click "Get AI Prediction" for future forecasts`
+                        : "Select a stock to view real-time market data"}
                     </CardDescription>
                   </div>
                   {stockSymbol && (
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-500/20 rounded-full border border-blue-400/30">
                       <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                       <span className="text-sm font-medium text-blue-100">
-                        {predictionData.length > 0 ? 'AI Prediction' : 'Historical Data'}
+                        {predictionData.length > 0 ? 'AI Prediction' : 'Real Market Data'}
                       </span>
                     </div>
                   )}
@@ -396,6 +460,19 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       </LineChart>
                     </ResponsiveContainer>
                   </ChartContainer>
+                ) : isLoadingCurrent ? (
+                  <div className="min-h-[300px] flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <div className="relative">
+                        <div className="w-16 h-16 border-4 border-white/20 border-t-blue-400 rounded-full animate-spin"></div>
+                        <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-green-400 rounded-full animate-spin" style={{ animationDelay: '-0.5s' }}></div>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Loading market data...</p>
+                        <p className="text-sm text-white/60">Fetching current stock information</p>
+                      </div>
+                    </div>
+                  </div>
                 ) : currentStockData.length > 0 ? (
                   <ChartContainer config={chartConfig} className="min-h-[320px] chart-text-black">
                     <ResponsiveContainer width="100%" height="100%">
@@ -670,45 +747,89 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="mx-auto">
-                      <div className="space-y-2">
-                        <Label htmlFor="stock-select" className="text-sm font-medium text-white/90 flex items-center gap-2">
-                          <span>Select Company</span>
-                          <span className="text-xs bg-blue-500/30 text-blue-100 px-2 py-0.5 rounded-full border border-blue-400/30">Required</span>
-                        </Label>
-                        <Select
-        value={stockSymbol}
-        onValueChange={(value) => {
-          setStockSymbol(value)
-          setSelectedStock(value)
-          setPredictionData([])
-          setError(null)
-          // Generate dummy data for the selected stock
-          const dummyData = generateDummyHistoricalData(value)
-          setCurrentStockData(dummyData)
-        }}
-              >
-          <SelectTrigger className="h-10 px-3 text-sm border border-white/30 rounded-md bg-white/20 text-white placeholder:text-white/60 hover:border-blue-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 transition-colors backdrop-blur-sm">
-            <SelectValue className="text-white" placeholder="Select stock" />
-          </SelectTrigger>
+                                      <div className="space-y-2">
+                  <Label htmlFor="stock-select" className="text-sm font-medium text-white/90 flex items-center gap-2">
+                    <span>Select Company</span>
+                    <span className="text-xs bg-blue-500/30 text-blue-100 px-2 py-0.5 rounded-full border border-blue-400/30">Required</span>
+                  </Label>
+                  
+                  <div className="flex gap-2">
+                    <Select
+                      value={stockSymbol}
+                      onValueChange={async (value) => {
+                        setStockSymbol(value)
+                        setSelectedStock(value)
+                        setPredictionData([])
+                        setError(null)
+                        
+                        // Fetch real stock data from the new API endpoint
+                        try {
+                          setIsLoadingCurrent(true)
+                          const response = await fetch(`http://localhost:8080/user/stock/getByCode/${value}`)
+                          
+                          if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`)
+                          }
+                          
+                          const stockData = await response.json()
+                          console.log('Raw API response:', stockData) // Debug log
+                          
+                          // Use the helper function to parse the data
+                          const chartData = parseStockData(stockData)
+                          
+                          if (chartData.length === 0) {
+                            throw new Error('No valid stock data found in the response')
+                          }
+                          
+                          console.log('Parsed chart data:', chartData)
+                          setCurrentStockData(chartData)
+                          setError(null) // Clear any previous errors
+                        } catch (error) {
+                          console.error('Failed to fetch stock data:', error)
+                          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+                          setError(`Failed to fetch stock data: ${errorMessage}. Showing demo data instead.`)
+                          // Fall back to demo data if API fails
+                          const dummyData = generateDummyHistoricalData(value)
+                          setCurrentStockData(dummyData)
+                        } finally {
+                          setIsLoadingCurrent(false)
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="h-10 px-3 text-sm border border-white/30 rounded-md bg-white/20 text-white placeholder:text-white/60 hover:border-blue-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 transition-colors backdrop-blur-sm">
+                        <SelectValue className="text-white" placeholder="Select stock" />
+                      </SelectTrigger>
 
-          <SelectContent className="bg-white/20 backdrop-blur-md border border-white/30 shadow-sm rounded-md overflow-hidden max-h-72">
-            {stockCompanies.map((stock) => (
-              <SelectItem 
-                key={stock.symbol} 
-                value={stock.symbol}
-                className="px-3 py-2 text-white hover:bg-white/20 focus:bg-white/20 focus:text-white data-[state=checked]:bg-blue-500/30 data-[state=checked]:text-white cursor-pointer transition-colors"
-              >
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium w-30 text-lg">{stock.symbol}</span>
-                   
+                      <SelectContent className="bg-white/20 backdrop-blur-md border border-white/30 shadow-sm rounded-md overflow-hidden max-h-72">
+                        {stockCompanies.map((stock) => (
+                          <SelectItem 
+                            key={stock.symbol} 
+                            value={stock.symbol}
+                            className="px-3 py-2 text-white hover:bg-white/20 focus:bg-white/20 focus:text-white data-[state=checked]:bg-blue-500/30 data-[state=checked]:text-white cursor-pointer transition-colors"
+                          >
+                            <div className="flex flex-col gap-1">
+                              <div className="flex items-center justify-between">
+                                <span className="font-medium w-30 text-lg">{stock.symbol}</span>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    
+                    <Button
+                      onClick={() => fetchCurrentStockData(stockSymbol)}
+                      disabled={isLoadingCurrent || !stockSymbol}
+                      className="px-3 py-2 bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-400/30 hover:border-blue-400 transition-colors rounded-md backdrop-blur-sm"
+                      title="Refresh stock data"
+                    >
+                      {isLoadingCurrent ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <TrendingUp className="h-4 w-4" />
+                      )}
+                    </Button>
                   </div>
-                 
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
                 </div>
               </CardContent>
             </Card>
