@@ -251,23 +251,23 @@ export default function SettingsPage() {
         {user?.isPremium ? (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4">
+              <div className="bg-white/10 border border-white/20 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
                   <Zap className="h-5 w-5 text-yellow-400" />
                   <span className="text-white font-medium">Unlimited Stocks</span>
                 </div>
                 <p className="text-white/70 text-sm">Add unlimited stocks to your portfolio</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4">
+              <div className="bg-white/10 border border-white/20 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
-                  <BarChart3 className="h-5 w-5 text-blue-400" />
+                  <BarChart3 className="h-4 w-4 text-blue-400" />
                   <span className="text-white font-medium">Advanced Analytics</span>
                 </div>
                 <p className="text-white/70 text-sm">Access to technical and fundamental analysis</p>
               </div>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4">
+              <div className="bg-white/10 border border-white/20 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
-                  <Star className="h-5 w-5 text-purple-400" />
+                  <Star className="h-4 w-4 text-purple-400" />
                   <span className="text-white font-medium">Premium Features</span>
                 </div>
                 <p className="text-white/70 text-sm">Events, news, reports, and more</p>
@@ -295,7 +295,7 @@ export default function SettingsPage() {
         ) : (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6">
+              <div className="bg-white/10 border border-white/20 rounded-lg p-6">
                 <div className="text-center">
                   <Crown className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
                   <h4 className="text-lg font-semibold text-white mb-2">Free Plan</h4>
@@ -361,7 +361,7 @@ export default function SettingsPage() {
       {/* Premium Features Comparison */}
       <div>
         <h3 className="text-lg font-semibold text-white mb-4">Feature Comparison</h3>
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg overflow-hidden">
+        <div className="bg-white/10 border border-white/20 rounded-lg overflow-hidden">
           <div className="grid grid-cols-4 divide-x divide-white/10">
             <div className="p-4">
               <h4 className="text-white font-medium text-sm">Features</h4>
@@ -446,12 +446,39 @@ export default function SettingsPage() {
         
 
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex space-x-8">
-            {/* Left Sidebar */}
-            <div className="w-64 flex-shrink-0">
-              <Card className="bg-white/10 backdrop-blur-md border border-white/20 p-6">
-                <div className="space-y-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-4 sm:py-6 lg:py-8">
+          {/* Mobile Navigation Tabs */}
+          <div className="lg:hidden mb-6">
+            <div className="flex overflow-x-auto space-x-2 pb-2">
+              {[
+                { id: 'personal', label: 'Personal', icon: User },
+                { id: 'security', label: 'Security', icon: Shield },
+                { id: 'premium', label: 'Premium', icon: Crown },
+                { id: 'investing', label: 'Investing', icon: TrendingUp },
+                { id: 'beneficiaries', label: 'Beneficiaries', icon: Users },
+                { id: 'appearance', label: 'App', icon: Palette },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={`flex-shrink-0 flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeSection === item.id
+                      ? 'bg-white/20 text-white border border-white/30'
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-6 lg:space-y-0">
+            {/* Left Sidebar - Hidden on mobile, visible on desktop */}
+            <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+              <Card className="bg-white/10 border border-white/20 p-4 lg:p-6">
+                <div className="space-y-4 lg:space-y-6">
                   <div>
                     <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
                       Account details and options
@@ -480,7 +507,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <div className="border-t border-white/20 pt-6">
+                  <div className="border-t border-white/20 pt-4 lg:pt-6">
                     <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
                       App preferences
                     </h3>
@@ -499,7 +526,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <div className="border-t border-white/20 pt-6 space-y-2">
+                  <div className="border-t border-white/20 pt-4 lg:pt-6 space-y-2">
                     <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
                       <AlertDialogTrigger asChild>
                         <button className="w-full flex items-center space-x-3 px-3 py-2 rounded-md text-left text-white/70 hover:text-white hover:bg-white/10 transition-colors">
@@ -507,20 +534,20 @@ export default function SettingsPage() {
                           <span className="text-sm">Log out</span>
                         </button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-white/95 backdrop-blur-md border border-white/30">
+                      <AlertDialogContent className="bg-purple-900/95 border border-white/30 shadow-2xl">
                         <AlertDialogHeader>
-                          <AlertDialogTitle className="text-gray-900">Confirm Logout</AlertDialogTitle>
-                          <AlertDialogDescription className="text-gray-700">
+                          <AlertDialogTitle className="text-white font-semibold">Confirm Logout</AlertDialogTitle>
+                          <AlertDialogDescription className="text-white/90">
                             Are you sure you want to log out of your account?
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="bg-gray-200 text-gray-900 hover:bg-gray-300">
+                          <AlertDialogCancel className="text-white/90 hover:text-white hover:bg-white/20 hover:border-white/50 cursor-pointer">
                             Cancel
                           </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={handleLogout}
-                            className="bg-red-600 text-white hover:bg-red-700"
+                            className="bg-red-500 text-white hover:bg-red-600 hover:text-white border border-red-400 cursor-pointer"
                           >
                             Logout
                           </AlertDialogAction>
@@ -542,10 +569,10 @@ export default function SettingsPage() {
 
             {/* Main Content Area */}
             <div className="flex-1">
-              <Card className="bg-white/10 backdrop-blur-md border border-white/20 p-8">
-                <div className="flex items-center space-x-3 mb-8">
-                  <SettingsIcon className="h-6 w-6 text-white" />
-                  <h2 className="text-2xl font-bold text-white">
+              <Card className="bg-white/10 border border-white/20 p-4 sm:p-6 lg:p-8">
+                <div className="flex items-center space-x-3 mb-4 sm:mb-6 lg:mb-8">
+                  <SettingsIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
                     {activeSection === 'personal' && 'Personal information'}
                     {activeSection === 'security' && 'Security and Privacy'}
                     {activeSection === 'premium' && 'Premium Management'}
@@ -564,7 +591,7 @@ export default function SettingsPage() {
 
       {/* Premium Modal */}
       {showPremiumModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl max-w-2xl mx-4">
             <CardHeader className="border-b border-white/20 text-center">
               <div className="flex items-center justify-center space-x-3 mb-4">

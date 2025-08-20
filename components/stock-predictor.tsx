@@ -451,6 +451,12 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
       return
     }
 
+    // Validate prediction timeframe
+    if (months < 1 || months > 12) {
+      setError("Prediction timeframe must be between 1 and 12 months")
+      return
+    }
+
     setIsLoading(true)
     setError(null)
 
@@ -587,9 +593,9 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   </div>
                   {stockSymbol && (
                     <div className="flex items-center gap-2">
-                      <div className="px-0 md:px-3 py-1.5 flex items-center gap-2 bg-blue-500/20 rounded-full border border-blue-400/30">
+                      <div className="px-0 md:px-3 py-1.5 flex items-center gap-2 bg-blue-500/20 md:rounded-full border border-blue-400/30">
                         <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                        <span className="text-sm font-medium text-blue-100">
+                        <span className="text-xs md:text-sm font-medium text-blue-100">
                           {predictionData.length > 0 ? 'AI Prediction' : 'Real Market Data'}
                         </span>
                       </div>
@@ -980,11 +986,11 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
               </div>
 
                             {/* Prediction Parameters Section - 30% of screen (3/10 columns) on large screens, full width on mobile */}
-              <div className="lg:col-span-3 space-y-3 lg:space-y-2 mt-5 lg:mt-0 lg:sticky lg:top-6 lg:self-start lg:h-fit">
+              <div className="lg:col-span-3 space-y-3 lg:space-y-2  md:mt-6 lg:sticky lg:top-6 lg:self-start lg:h-fit">
                 {/* Stock Selection Card */}
                 <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-blue-400/40 -mt-6 to-purple-300/40 pb-3 border border-blue-400/30">
-                <CardTitle className="text-xl pt-4 font-bold text-white flex items-center gap-3">
+              <CardHeader className="bg-gradient-to-r from-blue-400/40 -mt-6 to-purple-300/40 pb-3 border border-blue-400/30  sm:p-1 ">
+                <CardTitle className="text-lg sm:text-xl pt-2 sm:pt-4 font-bold text-white flex items-center gap-2 sm:gap-3">
                   <Target className="h-6 w-6 text-white" />
                   Stock Selection
                 </CardTitle>
@@ -992,14 +998,14 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                         Choose a company to analyze and predict future trends
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="mx-auto">
-                                      <div className="space-y-2">
+                    <CardContent className="mx-auto  sm:p-1 ">
+                                      <div className="space-y-2 sm:space-y-3">
                   <Label htmlFor="stock-select" className="text-sm font-medium text-white/90 flex items-center gap-2">
                     <span>Select Company</span>
                     <span className="text-xs bg-blue-500/30 text-blue-100 px-2 py-0.5 rounded-full border border-blue-400/30">Required</span>
                   </Label>
                   
-                  <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex flex-row gap-2 items-center">
                     <Select
                       value={stockSymbol}
                       onOpenChange={(open) => {
@@ -1103,38 +1109,6 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                       )}
                     </Button>
                     
-                    <Button
-                      onClick={() => fetchStockNews(stockSymbol)}
-                      disabled={isLoadingNews || !stockSymbol}
-                      className="px-3 py-2 bg-green-500/30 hover:bg-green-500/50 text-white border border-green-400/30 hover:border-green-400 transition-colors rounded-md backdrop-blur-sm"
-                      title="Test news API"
-                    >
-                      {isLoadingNews ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <span className="text-xs">Test News</span>
-                      )}
-                    </Button>
-                    
-                    {/* Mobile-friendly news refresh indicator */}
-                    <div className="block sm:hidden">
-                      <Button
-                        onClick={() => {
-                          setStockNews([])
-                          fetchStockNews(stockSymbol)
-                        }}
-                        disabled={isLoadingNews || !stockSymbol}
-                        className="w-full px-3 py-2 bg-blue-500/40 hover:bg-blue-500/60 text-white border border-blue-400/40 hover:border-blue-400 transition-colors rounded-md backdrop-blur-sm text-sm"
-                        title="Refresh news for mobile"
-                      >
-                        {isLoadingNews ? (
-                          <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                        ) : (
-                          <BarChart3 className="h-4 w-4 mr-2" />
-                        )}
-                        Refresh News
-                      </Button>
-                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -1142,8 +1116,8 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
 
             {/* Prediction Parameters Card */}
             <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r -mt-6 from-purple-500/20 to-pink-500/20 border-b border-purple-400/30">
-                <CardTitle className="pt-4 text-lg font-bold text-white flex items-center gap-2">
+              <CardHeader className="bg-gradient-to-r -mt-6 from-purple-500/20 to-pink-500/20 border-b border-purple-400/30 p-3 sm:p-4 lg:p-6">
+                <CardTitle className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <Zap className="h-5 w-5 text-purple-400" />
                   Prediction Parameters
                 </CardTitle>
@@ -1158,9 +1132,9 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   )}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="px-6 space-y-6">
+              <CardContent className=" lg:px-6 space-y-4 sm:space-y-6">
                 {/* Timeframe Selection */}
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <Label htmlFor="months" className="text-sm font-semibold text-white/90 flex items-center gap-2">
                     <span>Prediction Timeframe</span>
                     <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
@@ -1171,17 +1145,42 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     min="1"
                     max="12"
                     value={months}
-                    onChange={(e) => setMonths(Number(e.target.value))}
-                    className="h-6 text-sm text-white border-white/30 focus:border-purple-400 bg-white/20 hover:bg-white/30 transition-colors backdrop-blur-sm"
+                    onChange={(e) => {
+                      const value = Number(e.target.value)
+                      // Ensure value is within valid range
+                      if (value >= 1 && value <= 12) {
+                        setMonths(value)
+                      } else if (value < 1) {
+                        setMonths(1)
+                      } else if (value > 12) {
+                        setMonths(12)
+                      }
+                    }}
+                    onBlur={(e) => {
+                      // Ensure value is valid when user leaves the field
+                      const value = Number(e.target.value)
+                      if (value < 1 || value > 12 || isNaN(value)) {
+                        setMonths(1)
+                      }
+                    }}
+                    className={`h-6 text-sm text-white border-white/30 focus:border-purple-400 bg-white/20 hover:bg-white/30 transition-colors backdrop-blur-sm ${
+                      months < 1 || months > 12 ? 'border-red-400 focus:border-red-400' : ''
+                    }`}
                   />
                   <div className="flex items-center gap-2 text-xs text-white/60">
                     <div className="w-1.5 h-1.5 bg-white/40 rounded-full"></div>
                     <span>Range: 1-12 months</span>
                   </div>
+                  {(months < 1 || months > 12) && (
+                    <div className="flex items-center gap-2 text-xs text-red-400">
+                      <div className="w-1.5 h-1.5 bg-red-400 rounded-full"></div>
+                      <span>Invalid timeframe. Must be between 1-12 months.</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* News Input Section */}
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center justify-between">
                     <Label className="text-sm font-semibold text-white/90 flex items-center gap-2">
                       <span>News & Sentiment</span>
@@ -1199,7 +1198,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     </Button>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {newsList.map((news, index) => (
                       <div key={index} className="relative group">
                         <Textarea
@@ -1258,7 +1257,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                 {/* Prediction Button */}
                 <Button 
                   onClick={handlePrediction} 
-                  disabled={isLoading || !stockSymbol.trim()} 
+                  disabled={isLoading || !stockSymbol.trim() || months < 1 || months > 12} 
                   className="w-full h-12 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {isLoading ? (
@@ -1273,6 +1272,13 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     </div>
                   )}
                 </Button>
+                
+                {/* Validation Message */}
+                {months < 1 || months > 12 ? (
+                  <div className="text-center text-xs text-red-400 bg-red-500/10 border border-red-400/20 rounded-lg p-2">
+                    ⚠️ Please set a valid prediction timeframe (1-12 months) to enable AI prediction
+                  </div>
+                ) : null}
               </CardContent>
             </Card>
           </div>
