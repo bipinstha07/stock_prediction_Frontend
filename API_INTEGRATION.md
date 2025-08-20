@@ -3,11 +3,31 @@
 ## Overview
 The stock predictor component now integrates with a real backend API to fetch live stock data when a stock is selected.
 
-## API Endpoint
+## API Endpoints
+
+### Stock Data API
 - **URL**: `GET /user/stock/getByCode/{code}`
 - **Method**: GET
 - **Path Parameter**: `{code}` - Stock symbol (e.g., AAPL, GOOGL, MSFT)
 - **Response**: `List<CompanyStockPriceDto>`
+
+### Prediction API
+- **URL**: `POST /user/stock/{stock}`
+- **Method**: POST
+- **Path Parameter**: `{stock}` - Stock symbol (e.g., AAPL, GOOGL, MSFT)
+- **Request Body**: 
+```json
+{
+  "news": ["news item 1", "news item 2"],
+  "months": 6,
+  "stockPrice": "230.56",
+  "stockPriceHistory": [
+    {"date": "2025-08-19", "price": 230.56},
+    {"date": "2025-08-15", "price": 231.59},
+    {"date": "2025-08-08", "price": 229.35}
+  ]
+}
+```
 
 ## Data Format
 The API returns a list of stock price data. The component now handles various response formats including:
@@ -42,13 +62,15 @@ The component can also handle responses in different formats and automatically c
 - The button shows a loading spinner during refresh
 
 ### 3. Error Handling
-- If the API call fails, the component falls back to demo data
-- Error messages are displayed to inform users
+- **Stock Data API**: If the stock data API fails, the component falls back to demo data
+- **Prediction API**: If the prediction API fails, shows "AI model is currently busy" message without fallback data
+- Error messages are displayed to inform users with appropriate styling
 - Console logging for debugging purposes
 
 ### 4. Fallback Behavior
+- **Stock Data**: If the backend is unavailable, users still see sample data
+- **AI Predictions**: No fallback data - shows "AI model busy" message with retry option
 - Demo mode continues to work as before
-- If the backend is unavailable, users still see sample data
 - Graceful degradation ensures the app remains functional
 
 ## Usage
@@ -68,7 +90,9 @@ The component can also handle responses in different formats and automatically c
 1. After selecting a stock and viewing current data
 2. Configure prediction parameters (timeframe, news sentiment)
 3. Click "Get AI Prediction" to generate future forecasts
-4. The prediction API is called separately from the stock data API
+4. The prediction API is called with current stock price and complete price history
+5. The complete price history allows for more accurate trend analysis and predictions
+6. The prediction API is called separately from the stock data API
 
 ## Configuration
 

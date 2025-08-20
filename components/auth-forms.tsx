@@ -36,7 +36,7 @@ export function AuthForms({ mode, onSuccess, onModeChange }: AuthFormsProps) {
     try {
       if (mode === "login") {
         // Login: Get user by email
-        const response = await fetch(`http://localhost:8080/user/getUser/${formData.email}`)
+        const response = await fetch(`http://10.0.0.142:8080/user/getUser/${formData.email}`)
         
         if (response.ok) {
           const userData = await response.json()
