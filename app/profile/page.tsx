@@ -537,11 +537,11 @@ export default function ProfilePage() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <Button
               variant="ghost"
-              onClick={() => router.push('/user')}
+              onClick={() => router.push('/')}
               className="text-white/80 hover:text-white hover:bg-white/20 w-fit"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
+              Back to Home
             </Button>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">Profile & Portfolio</h1>
@@ -759,7 +759,7 @@ export default function ProfilePage() {
 
             {/* Navigation Tabs */}
             <div className="overflow-x-auto">
-              <div className="flex space-x-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-1 min-w-max">
+              <div className="flex space-x-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg  min-w-max">
                 {[
                   { id: 'overview', label: 'Overview', icon: Building2 },
                   { id: 'fundamental', label: 'Fundamental', icon: BarChart3 },
@@ -772,7 +772,7 @@ export default function ProfilePage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                    className={`flex items-center space-x-2 px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'bg-white/20 text-white'
                         : 'text-white/70 hover:text-white hover:bg-white/10'

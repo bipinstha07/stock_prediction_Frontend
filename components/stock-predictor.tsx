@@ -1146,20 +1146,26 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     max="12"
                     value={months}
                     onChange={(e) => {
-                      const value = Number(e.target.value)
-                      // Ensure value is within valid range
-                      if (value >= 1 && value <= 12) {
-                        setMonths(value)
-                      } else if (value < 1) {
-                        setMonths(1)
-                      } else if (value > 12) {
-                        setMonths(12)
+                      const value = e.target.value
+                      // If user tries to make it blank, set to 0
+                      if (value === '') {
+                        setMonths(0)
+                      } else {
+                        const numValue = Number(value)
+                        // Ensure value is within valid range
+                        if (numValue >= 1 && numValue <= 12) {
+                          setMonths(numValue)
+                        } else if (numValue < 1) {
+                          setMonths(1)
+                        } else if (numValue > 12) {
+                          setMonths(12)
+                        }
                       }
                     }}
                     onBlur={(e) => {
                       // Ensure value is valid when user leaves the field
-                      const value = Number(e.target.value)
-                      if (value < 1 || value > 12 || isNaN(value)) {
+                      const value = e.target.value
+                      if (value === '' || Number(value) < 1 || Number(value) > 12 || isNaN(Number(value))) {
                         setMonths(1)
                       }
                     }}
