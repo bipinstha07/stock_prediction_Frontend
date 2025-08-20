@@ -311,7 +311,7 @@ export default function ProfilePage() {
   const renderStockCard = (stock: Stock, isPremium: boolean = false) => (
     <div 
       key={stock.symbol}
-      className={`flex items-center justify-between py-2 px-1 cursor-pointer transition-all duration-200 rounded ${
+      className={`flex items-center justify-between py-3 px-3 sm:py-2 sm:px-1 cursor-pointer transition-all duration-200 rounded ${
         selectedStock === stock.symbol ? 'bg-white/10' : 'hover:bg-white/5'
       }`}
       onClick={() => setSelectedStock(stock.symbol)}
@@ -329,7 +329,7 @@ export default function ProfilePage() {
 
   const renderCompanyOverview = () => (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <Card className="bg-white/10 backdrop-blur-md border border-white/20">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
@@ -398,7 +398,7 @@ export default function ProfilePage() {
 
   const renderStockComparison = () => (
     <div className="space-y-6">
-      <div className="flex items-center space-x-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
         <div className="flex items-center space-x-2">
           <span className="text-white/70">Compare</span>
           <span className="text-white font-semibold">{selectedStock}</span>
@@ -407,7 +407,7 @@ export default function ProfilePage() {
         <select
           value={compareStock}
           onChange={(e) => setCompareStock(e.target.value)}
-          className="bg-white/20 border border-white/30 text-white rounded-lg px-3 py-2 focus:border-blue-400"
+          className="bg-white/20 border border-white/30 text-white rounded-lg px-3 py-2 focus:border-blue-400 w-full sm:w-auto"
         >
           <option value="">Select stock to compare</option>
           {userStocks.map(stock => (
@@ -419,7 +419,7 @@ export default function ProfilePage() {
       </div>
 
       {compareStock && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardHeader>
                 <CardTitle className="text-white text-center">{selectedStock}</CardTitle>
@@ -465,14 +465,14 @@ export default function ProfilePage() {
   );
 
   const renderPremiumModal = () => (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl max-w-md mx-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl w-full max-w-md">
         <CardHeader className="text-center">
           <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <Crown className="h-8 w-8 text-white" />
           </div>
-          <CardTitle className="text-2xl text-white">Upgrade to Premium</CardTitle>
-          <CardDescription className="text-white/80">
+          <CardTitle className="text-xl sm:text-2xl text-white">Upgrade to Premium</CardTitle>
+          <CardDescription className="text-white/80 text-sm sm:text-base">
             Unlock unlimited stock management and advanced analytics
           </CardDescription>
         </CardHeader>
@@ -497,8 +497,8 @@ export default function ProfilePage() {
           </div>
           
           <div className="text-center">
-            <div className="text-3xl font-bold text-white mb-2">$9.99<span className="text-lg text-white/70">/month</span></div>
-            <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
+            <div className="text-2xl sm:text-3xl font-bold text-white mb-2">$9.99<span className="text-base sm:text-lg text-white/70">/month</span></div>
+            <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white py-3">
               Upgrade Now
             </Button>
           </div>
@@ -531,28 +531,26 @@ export default function ProfilePage() {
 
       <Navbar />
       
-      <div className="max-w-7xl mx-auto px-6 py-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 relative z-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <Button
               variant="ghost"
               onClick={() => router.push('/user')}
-              className="text-white/80 hover:text-white hover:bg-white/20"
+              className="text-white/80 hover:text-white hover:bg-white/20 w-fit"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Profile & Portfolio</h1>
-              <p className="text-white/70">Manage your stocks and analyze companies</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">Profile & Portfolio</h1>
+              <p className="text-white/70 text-sm sm:text-base">Manage your stocks and analyze companies</p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
-         
-            
-            <Badge variant="secondary" className={`${user?.isPremium ? 'bg-yellow-500/20 text-yellow-100 border-yellow-400/30' : 'bg-blue-500/20 text-blue-100 border-blue-400/30'}`}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <Badge variant="secondary" className={`${user?.isPremium ? 'bg-yellow-500/20 text-yellow-100 border-yellow-400/30' : 'bg-blue-500/20 text-blue-100 border-blue-400/30'} w-fit`}>
               {user?.isPremium ? (
                 <>
                   <Crown className="h-4 w-4 mr-1" />
@@ -568,7 +566,7 @@ export default function ProfilePage() {
             {!user?.isPremium && (
               <Button
                 onClick={() => setShowPremiumModal(true)}
-                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white w-fit"
               >
                 <Crown className="h-4 w-4 mr-2" />
                 Upgrade
@@ -577,9 +575,96 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        {/* Mobile Stocks Section - First on mobile, hidden on desktop */}
+        <div className="lg:hidden space-y-6 mb-6">
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-green-400" />
+                My Stocks
+              </CardTitle>
+              <CardDescription className="text-white/70">
+                {user?.isPremium ? (
+                  `${filteredUserStocks.length} of unlimited stocks (Premium Plan)`
+                ) : (
+                  `${filteredUserStocks.length} of ${userPortfolio.length} stocks (Free Plan)`
+                )}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {/* Search Bar */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search stocks..."
+                  value={stockSearch}
+                  onChange={(e) => setStockSearch(e.target.value)}
+                  className="w-full bg-white/20 border border-white/30 text-white placeholder-white/50 rounded-lg px-3 py-2 text-sm focus:border-blue-400 focus:outline-none"
+                />
+                <div className="absolute right-3 top-2.5">
+                  <svg className="w-4 h-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              
+              {/* Scrollable Stocks List */}
+              <div className="h-[200px] overflow-y-auto space-y-2 pr-2">
+                {filteredUserStocks.map(stock => renderStockCard(stock))}
+              </div>
+              
+              <div className="pt-3 border-t border-white/20">
+                {user?.isPremium ? (
+                  <Button
+                    onClick={() => setShowAddStockModal(true)}
+                    variant="outline"
+                    className="w-full border-green-400/30 text-green-400 hover:bg-green-400/20"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Stock
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setShowPremiumModal(true)}
+                    variant="outline"
+                    className="w-full border-white/30 text-white hover:bg-white/20"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add More Stocks
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {!user?.isPremium && (
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-yellow-400" />
+                  Premium Stocks
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  Unlock with Premium Plan
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="text-center py-8">
+                  <Lock className="h-12 w-12 text-yellow-400 mx-auto mb-3" />
+                  <p className="text-white/70 mb-2">Premium stocks locked</p>
+                  <Button onClick={() => setShowPremiumModal(true)} variant="outline" className="border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20">
+                    <Crown className="h-4 w-4 mr-2" />
+                    Upgrade to Premium
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Sidebar - Stock Management */}
-          <div className="lg:col-span-1 space-y-6">
+          {/* Left Sidebar - Stock Management (Hidden on mobile, visible on desktop) */}
+          <div className="hidden lg:block lg:col-span-1 space-y-6">
             <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
@@ -637,51 +722,7 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
 
-            {!user?.isPremium ? (
-              <Card className="bg-white/10 backdrop-blur-md border border-white/20">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <Crown className="h-5 w-5 text-yellow-400" />
-                    Premium Stocks
-                  </CardTitle>
-                  <CardDescription className="text-white/70">
-                    Unlock with Premium Plan
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="text-center py-8">
-                    <Lock className="h-12 w-12 text-yellow-400 mx-auto mb-3" />
-                    <p className="text-white/70 mb-2">Premium stocks locked</p>
-                    <Button onClick={() => setShowPremiumModal(true)} variant="outline" className="border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20">
-                      <Crown className="h-4 w-4 mr-2" />
-                      Upgrade to Premium
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="bg-white/10 backdrop-blur-md border border-white/20">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <Crown className="h-5 w-5 text-yellow-400" />
-                    My Premium Stocks
-                  </CardTitle>
-                  <CardDescription className="text-white/70">
-                    Manage your premium stock portfolio
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="text-center py-8">
-                    <Crown className="h-12 w-12 text-yellow-400 mx-auto mb-3" />
-                    <p className="text-white/70 mb-2">No premium stocks added yet</p>
-                    <Button variant="outline" className="border-green-400/30 text-green-400 hover:bg-green-400/20">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Premium Stock
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            
           </div>
 
           {/* Main Content - Company Analysis */}
@@ -689,20 +730,20 @@ export default function ProfilePage() {
             {/* Company Header */}
             <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
                       <span className="text-white font-bold text-xl">{selectedStock}</span>
                     </div>
                     <div>
-                      <CardTitle className="text-2xl text-white">{currentCompany.name}</CardTitle>
-                      <CardDescription className="text-white/70">
+                      <CardTitle className="text-xl sm:text-2xl text-white">{currentCompany.name}</CardTitle>
+                      <CardDescription className="text-white/70 text-sm">
                         {currentCompany.sector} • {currentCompany.industry}
                       </CardDescription>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">
+                  <div className="text-left sm:text-right">
+                    <div className="text-xl sm:text-2xl font-bold text-white">
                       ${userStocks.find(s => s.symbol === selectedStock)?.price.toFixed(2)}
                     </div>
                     <div className={`text-sm ${userStocks.find(s => s.symbol === selectedStock)?.changePercent! >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -714,30 +755,35 @@ export default function ProfilePage() {
               </CardHeader>
             </Card>
 
+
+
             {/* Navigation Tabs */}
-            <div className="flex space-x-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-1">
-              {[
-                { id: 'overview', label: 'Overview', icon: Building2 },
-                { id: 'fundamental', label: 'Fundamental', icon: BarChart3 },
-                { id: 'technical', label: 'Technical', icon: TrendingUp },
-                { id: 'events', label: 'Events', icon: Calendar },
-                { id: 'news', label: 'News', icon: Newspaper },
-                { id: 'reports', label: 'Reports', icon: FileText },
-                { id: 'compare', label: 'Compare Stocks', icon: Scale }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                    activeTab === tab.id
-                      ? 'bg-white/20 text-white'
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  <tab.icon className="h-4 w-4" />
-                  <span>{tab.label}</span>
-                </button>
-              ))}
+            <div className="overflow-x-auto">
+              <div className="flex space-x-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-1 min-w-max">
+                {[
+                  { id: 'overview', label: 'Overview', icon: Building2 },
+                  { id: 'fundamental', label: 'Fundamental', icon: BarChart3 },
+                  { id: 'technical', label: 'Technical', icon: TrendingUp },
+                  { id: 'events', label: 'Events', icon: Calendar },
+                  { id: 'news', label: 'News', icon: Newspaper },
+                  { id: 'reports', label: 'Reports', icon: FileText },
+                  { id: 'compare', label: 'Compare Stocks', icon: Scale }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                      activeTab === tab.id
+                        ? 'bg-white/20 text-white'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <tab.icon className="h-4 w-4" />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Tab Content */}
@@ -758,7 +804,7 @@ export default function ProfilePage() {
                    <CardContent>
                      {user?.isPremium ? (
                        <div className="space-y-6">
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
                              <CardHeader>
                                <CardTitle className="text-white text-lg">Financial Ratios</CardTitle>
@@ -914,7 +960,7 @@ export default function ProfilePage() {
                   <CardContent>
                     {user?.isPremium ? (
                       <div className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                           <Card className="bg-white/10 backdrop-blur-md border border-white/20">
                             <CardHeader>
                               <CardTitle className="text-white text-lg">Upcoming Events</CardTitle>
@@ -1164,8 +1210,8 @@ export default function ProfilePage() {
 
       {/* Add Stock Modal */}
       {showAddStockModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl max-w-4xl mx-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <CardHeader>
               <CardTitle className="text-2xl text-white text-center">Add New Stock to Portfolio</CardTitle>
               <CardDescription className="text-white/70 text-center">
@@ -1181,7 +1227,7 @@ export default function ProfilePage() {
                     value={newStockSymbol}
                     onChange={(e) => setNewStockSymbol(e.target.value)}
                     placeholder="Enter stock symbol (e.g., AAPL, TSLA, GOOGL)..."
-                    className="w-full bg-white/20 border border-white/30 text-white placeholder-white/50 rounded-lg px-4 py-3 text-base focus:border-blue-400 focus:outline-none"
+                    className="w-full bg-white/20 border border-white/30 text-white placeholder-white/50 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base focus:border-blue-400 focus:outline-none"
                     onKeyPress={(e) => e.key === 'Enter' && handleAddNewStock()}
                   />
                   <div className="absolute right-4 top-3.5">
@@ -1196,7 +1242,7 @@ export default function ProfilePage() {
                   <Button 
                     onClick={handleAddNewStock}
                     disabled={!newStockSymbol.trim() || isAddingStock}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 text-base font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
                   >
                     {isAddingStock ? (
                       <>
@@ -1229,11 +1275,11 @@ export default function ProfilePage() {
               </div>
 
               {/* Stock Categories */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                 {['Technology', 'Financial Services', 'Healthcare', 'Automotive', 'E-commerce', 'All'].map(category => (
                   <button
                     key={category}
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-sm transition-colors"
+                    className="px-2 sm:px-3 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-xs sm:text-sm transition-colors"
                   >
                     {category}
                   </button>
@@ -1241,7 +1287,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Available Stocks Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
                 {allStocks.filter(stock => !userPortfolio.find(p => p.symbol === stock.symbol)).map(stock => (
                   <Card 
                     key={stock.symbol}
@@ -1294,7 +1340,7 @@ export default function ProfilePage() {
               {/* Quick Add Section */}
               <div className="border-t border-white/20 pt-4">
                 <h3 className="text-lg font-semibold text-white mb-3">Quick Add Popular Stocks</h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   {['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN', 'NVDA'].map(symbol => {
                     const stock = allStocks.find(s => s.symbol === symbol);
                     if (!stock || userPortfolio.find(p => p.symbol === symbol)) return null;
@@ -1315,7 +1361,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               
-              <div className="flex justify-end space-x-3 pt-4 border-t border-white/20">
+              <div className="flex justify-center sm:justify-end space-x-3 pt-4 border-t border-white/20">
                 <Button 
                   variant="ghost" 
                   onClick={() => setShowAddStockModal(false)}
