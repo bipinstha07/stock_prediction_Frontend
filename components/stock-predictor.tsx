@@ -70,6 +70,27 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
   const [error, setError] = useState<string | null>(null)
   const [stockNews, setStockNews] = useState<any[]>([])
   const [isLoadingNews, setIsLoadingNews] = useState(false)
+  const [loadingTimer, setLoadingTimer] = useState<number>(0)
+
+  // Timer effect for loading state
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null
+    
+    if (isLoading) {
+      setLoadingTimer(0)
+      interval = setInterval(() => {
+        setLoadingTimer(prev => prev + 1)
+      }, 1000)
+    } else {
+      setLoadingTimer(0)
+    }
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval)
+      }
+    }
+  }, [isLoading])
 
   // Function to clear prediction data and return to real data view
   const clearPredictionAndShowRealData = () => {
@@ -467,55 +488,108 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
         const demoData = generateDemoData(stockSymbol, months)
         setPredictionData(demoData)
       } else {
+        // Get the latest stock price and complete price history from current data
+        let currentStockPrice = "0"
+        let stockPriceHistory: Array<{date: string, price: number}> = []
+        
+        if (currentStockData.length > 0) {
+          // Get the most recent price (last item in the sorted array)
+          const latestData = currentStockData[currentStockData.length - 1]
+          currentStockPrice = latestData.price.toString()
+          
+          // Get the complete price history
+          stockPriceHistory = currentStockData.map(item => ({
+            date: item.date,
+            price: item.price
+          }))
+          
+          console.log('Current stock price for prediction:', currentStockPrice)
+          console.log('Stock price history for prediction:', stockPriceHistory)
+        }
+        
+        // Real API call with 5-minute timeout
+        const requestBody: NewsStatementDto = {
+          news: filteredNews,
+          months: months,
+          stockPrice: currentStockPrice,
+          stockPriceHistory: stockPriceHistory
+        }
+
+        console.log('Sending prediction request:', {
+          stockSymbol,
+          requestBody,
+          currentStockDataLength: currentStockData.length,
+          latestPrice: currentStockPrice,
+          priceHistoryLength: stockPriceHistory.length
+        })
+
+        // Simple timeout approach without AbortController
+        const startTime = Date.now()
+        let requestCompleted = false
+        
+        // Set a warning timeout (not abort timeout) to help debug
+        const warningTimeoutId = setTimeout(() => {
+          if (!requestCompleted) {
+            const elapsed = Date.now() - startTime
+            console.log(`⚠️ Request still in progress after ${Math.round(elapsed/1000)}s - this is just a warning, not an abort`)
+          }
+        }, 60000) // Warning at 1 minute
+        
+        console.log(`Starting AI prediction request at ${new Date().toISOString()}`)
+
         try {
-          // Get the latest stock price and complete price history from current data
-          let currentStockPrice = "0"
-          let stockPriceHistory: Array<{date: string, price: number}> = []
+          console.log(`🔍 Fetch request starting...`)
+          console.log(`🔍 Request URL: http://localhost:8080/user/stock/${stockSymbol}`)
+          console.log(`🔍 Request body:`, requestBody)
           
-          if (currentStockData.length > 0) {
-            // Get the most recent price (last item in the sorted array)
-            const latestData = currentStockData[currentStockData.length - 1]
-            currentStockPrice = latestData.price.toString()
-            
-            // Get the complete price history
-            stockPriceHistory = currentStockData.map(item => ({
-              date: item.date,
-              price: item.price
-            }))
-            
-            console.log('Current stock price for prediction:', currentStockPrice)
-            console.log('Stock price history for prediction:', stockPriceHistory)
-          }
-          
-          // Real API call
-          const requestBody: NewsStatementDto = {
-            news: filteredNews,
-            months: months,
-            stockPrice: currentStockPrice,
-            stockPriceHistory: stockPriceHistory
-          }
-
-          console.log('Sending prediction request:', {
-            stockSymbol,
-            requestBody,
-            currentStockDataLength: currentStockData.length,
-            latestPrice: currentStockPrice,
-            priceHistoryLength: stockPriceHistory.length
+          // Add a timeout wrapper to see if it's a network-level timeout
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => {
+              reject(new Error(`Custom timeout after 5 minutes - this is our test timeout`))
+            }, 420000) // 7 minutes
           })
-
-          const response = await fetch(`http://localhost:8080/user/stock/${stockSymbol}`, {
+          
+          const fetchPromise = fetch(`http://localhost:8080/user/stock/${stockSymbol}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Connection": "keep-alive",
+              "Keep-Alive": "timeout=600, max=1000",
             },
             body: JSON.stringify(requestBody),
+            keepalive: true,
           })
+          
+          console.log(`🔍 Racing fetch vs 5 minute timeout...`)
+          const response = await Promise.race([fetchPromise, timeoutPromise]) as Response
+          
+          console.log(`✅ Fetch request completed, status: ${response.status}`)
 
+          // Mark request as completed and log timing
+          requestCompleted = true
+          clearTimeout(warningTimeoutId)
+          const elapsed = Date.now() - startTime
+          console.log(`AI prediction response received at ${new Date().toISOString()}, took ${elapsed}ms (${Math.round(elapsed/1000)}s)`)
+
+          console.log(`Response status: ${response.status}, headers:`, Object.fromEntries(response.headers.entries()))
+          
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
+            // Try to get error details from response
+            let errorDetails = ''
+            try {
+              const errorData = await response.text()
+              errorDetails = ` - Response: ${errorData}`
+              console.log(`🚨 Backend error response:`, errorData)
+            } catch (e) {
+              errorDetails = ' - Could not read error response'
+              console.log(`🚨 Could not read error response:`, e)
+            }
+            throw new Error(`HTTP error! status: ${response.status}${errorDetails}`)
           }
 
+          console.log(`📥 Starting to parse response JSON...`)
           const data = await response.json()
+          console.log(`✅ Response data parsed successfully:`, data)
 
           // Backend returns list of objects with date and price fields
           const chartData: PredictionData[] = data
@@ -528,15 +602,58 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
 
           setPredictionData(chartData)
         } catch (apiError) {
-          // If API fails, show AI model busy message
+          // Log error details and timing
+          const elapsed = Date.now() - startTime
+          console.log(`❌ Request failed after ${elapsed}ms (${Math.round(elapsed/1000)}s)`)
+          
+          // If API fails, show appropriate error message
           console.warn("API call failed:", apiError)
-          setError("AI model is currently busy. Please try again later.")
+          console.log("🔍 Error details:", {
+            name: apiError instanceof Error ? apiError.name : 'Unknown',
+            message: apiError instanceof Error ? apiError.message : String(apiError),
+            stack: apiError instanceof Error ? apiError.stack : 'No stack trace'
+          })
+          
+          // Additional debugging for common error types
+          if (apiError instanceof Error) {
+            console.log(`🚨 Error type: ${apiError.constructor.name}`)
+            console.log(`🚨 Error name: ${apiError.name}`)
+            console.log(`🚨 Error message: ${apiError.message}`)
+            
+            // Check for specific error types
+            if (apiError.name === 'TypeError') {
+              console.log(`🚨 This is a TypeError - likely a network or fetch issue`)
+            } else if (apiError.name === 'SyntaxError') {
+              console.log(`🚨 This is a SyntaxError - likely a JSON parsing issue`)
+            } else if (apiError.name === 'AbortError') {
+              console.log(`🚨 This is an AbortError - request was aborted`)
+            }
+          }
+          
+          if (apiError instanceof Error) {
+            if (apiError.message.includes('Custom timeout after 5 minutes')) {
+              setError(`Backend is taking longer than 5 minutes to respond. The AI model is processing your request. Please wait and try again.`)
+            } else if (apiError.message.includes('timed out') || apiError.message.includes('timeout')) {
+              setError(`Request timed out after ${Math.round(elapsed/1000)} seconds. This might be a network timeout - backend may still be processing.`)
+            } else {
+              setError("AI model is currently busy. Please try again later.")
+            }
+          } else {
+            setError("AI model is currently busy. Please try again later.")
+          }
+          
           // Don't set prediction data - keep the chart showing current stock data
         }
       }
     } catch (err) {
       console.error("Prediction request failed:", err)
-      setError("AI model is currently busy. Please try again later.")
+      
+      if (err instanceof Error && err.message.includes('timed out')) {
+        setError(err.message)
+      } else {
+        setError("AI model is currently busy. Please try again later.")
+      }
+      
       // Don't set prediction data - keep the chart showing current stock data
     } finally {
       setIsLoading(false)
@@ -579,7 +696,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
               <CardHeader className="bg-gradient-to-r -mt-6 from-white/20 to-white/10 border-white/20">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
+                    <CardTitle className="text-xl font-bold text-white pt-2 flex items-center gap-2">
                       <TrendingUp className="h-5 w-5 text-green-400" />
                       Price Chart {stockSymbol ? `- ${stockSymbol}` : ""}
                     </CardTitle>
@@ -593,7 +710,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   </div>
                   {stockSymbol && (
                     <div className="flex items-center gap-2">
-                      <div className="px-0 md:px-3 py-1.5 flex items-center gap-2 bg-blue-500/20 md:rounded-full border border-blue-400/30">
+                      <div className="md:px-3 w-[150px] rounded-md px-4 md:w-auto py-1.5 flex items-center gap-2 bg-blue-500/20 md:rounded-full border border-blue-400/30">
                         <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                         <span className="text-xs md:text-sm font-medium text-blue-100">
                           {predictionData.length > 0 ? 'AI Prediction' : 'Real Market Data'}
@@ -1234,15 +1351,19 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   <div className={`p-4 text-sm rounded-lg flex items-center gap-2 backdrop-blur-sm ${
                     error.includes('AI model is currently busy') 
                       ? 'text-orange-200 bg-orange-500/20 border border-orange-400/30' 
+                      : error.includes('timed out')
+                      ? 'text-yellow-200 bg-yellow-500/20 border border-yellow-400/30'
                       : 'text-red-200 bg-red-500/20 border border-red-400/30'
                   }`}>
                     <div className="flex items-center gap-2 flex-1">
                       <AlertCircle className={`h-4 w-4 ${
-                        error.includes('AI model is currently busy') ? 'text-orange-400' : 'text-red-400'
+                        error.includes('AI model is currently busy') ? 'text-orange-400' 
+                        : error.includes('timed out') ? 'text-yellow-400'
+                        : 'text-red-400'
                       }`} />
                       <span>{error}</span>
                     </div>
-                    {error.includes('AI model is currently busy') && (
+                    {(error.includes('AI model is currently busy') || error.includes('timed out')) && (
                       <Button
                         onClick={handlePrediction}
                         disabled={isLoading}
@@ -1269,7 +1390,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating Prediction...
+                      Generating Prediction... {loadingTimer > 0 && `(${loadingTimer >= 60 ? `${Math.floor(loadingTimer / 60)}m ${loadingTimer % 60}s` : `${loadingTimer}s`})`}
                     </>
                   ) : (
                     <div className="flex items-center gap-2">
@@ -1285,6 +1406,18 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                     ⚠️ Please set a valid prediction timeframe (1-12 months) to enable AI prediction
                   </div>
                 ) : null}
+
+                {/* Loading Info Message */}
+                {isLoading && (
+                  <div className="text-center text-xs text-blue-400 bg-blue-500/10 border border-blue-400/20 rounded-lg p-2">
+                    ⏱️ AI model is processing your request... This may take up to 10 minutes
+                    {loadingTimer > 0 && (
+                      <div className="mt-1 text-blue-300">
+                        Elapsed time: {loadingTimer >= 60 ? `${Math.floor(loadingTimer / 60)}m ${loadingTimer % 60}s` : `${loadingTimer}s`}
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
