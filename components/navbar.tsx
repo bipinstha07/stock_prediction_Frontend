@@ -59,7 +59,10 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
       if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target as Node)) {
         setShowAccountDropdown(false)
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+      // Check if click is outside mobile menu AND not on the toggle button
+      if (mobileMenuRef.current && 
+          !mobileMenuRef.current.contains(event.target as Node) &&
+          !(event.target as Element).closest('[data-mobile-toggle]')) {
         setShowMobileMenu(false)
       }
     }
@@ -213,15 +216,19 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
           </div>
 
           {/* Mobile Menu Button - Visible only on mobile */}
-          <div className="md:hidden">
+          <div className="md:hidden relative z-50" data-mobile-toggle>
+            
             <Button
               variant="ghost"
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              onClick={() => {
+                setShowMobileMenu(newState => !newState)
+              }}
               className="text-white/90 hover:text-white hover:bg-white/20 p-2 transition-all duration-200"
               aria-label={showMobileMenu ? 'Close menu' : 'Open menu'}
               aria-expanded={showMobileMenu}
+              data-mobile-toggle
             >
-              <Menu className="h-6 w-6" />
+              {showMobileMenu ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
@@ -233,19 +240,10 @@ export function Navbar({ onLoginClick, onSignupClick, onDemoClick, onLogout }: N
           <div 
             ref={mobileMenuRef}
             className="md:hidden absolute top-16 right-2 w-64 bg-purple-900/95 border border-white/30 rounded-lg shadow-xl z-40 transform transition-all duration-300 ease-out animate-in slide-in-from-top-2"
+            style={{ zIndex: 40 }}
           >
-            {/* Mobile Menu Header - Close Button Only */}
-            <div className="flex items-center justify-end px-3 py-2 border-b border-white/20">
-              <Button
-                variant="ghost"
-                onClick={() => setShowMobileMenu(false)}
-                className="text-white/80 hover:text-white hover:bg-white/20 p-1 transition-all duration-200"
-                aria-label="Close menu"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
             
+            {/* Mobile Menu Header - No close button needed */}
             <div className="px-3 py-3 space-y-2">
               {/* Predict Now Button */}
               <Button

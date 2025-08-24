@@ -71,6 +71,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
   const [stockNews, setStockNews] = useState<any[]>([])
   const [isLoadingNews, setIsLoadingNews] = useState(false)
   const [loadingTimer, setLoadingTimer] = useState<number>(0)
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:8080` : 'http://localhost:8080')
 
   // Timer effect for loading state
   useEffect(() => {
@@ -418,7 +419,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
       } else {
         try {
           // Real API call for current stock data using the new endpoint
-          const response = await fetch(`http://localhost:8080/user/stock/getByCode/${symbol}`)
+          const response = await fetch(`${API_BASE}/user/stock/getByCode/${symbol}`)
 
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
@@ -461,10 +462,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
     }
 
     const filteredNews = newsList.filter((news) => news.trim() !== "")
-    if (filteredNews.length === 0) {
-      setError("Please enter at least one news item")
-      return
-    }
+    const safeNews = filteredNews.length === 0 ? [""] : filteredNews
 
     // Check if we have current stock data
     if (currentStockData.length === 0) {
@@ -472,11 +470,8 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
       return
     }
 
-    // Validate prediction timeframe
-    if (months < 1 || months > 12) {
-      setError("Prediction timeframe must be between 1 and 12 months")
-      return
-    }
+    // Clamp prediction timeframe to valid range
+    const safeMonths = Math.min(12, Math.max(1, Number.isFinite(months) ? months : 1))
 
     setIsLoading(true)
     setError(null)
@@ -509,8 +504,8 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
         
         // Real API call with 5-minute timeout
         const requestBody: NewsStatementDto = {
-          news: filteredNews,
-          months: months,
+          news: safeNews,
+          months: safeMonths,
           stockPrice: currentStockPrice,
           stockPriceHistory: stockPriceHistory
         }
@@ -539,7 +534,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
 
         try {
           console.log(`🔍 Fetch request starting...`)
-          console.log(`🔍 Request URL: http://localhost:8080/user/stock/${stockSymbol}`)
+          console.log(`🔍 Request URL: ${API_BASE}/user/stock/${stockSymbol}`)
           console.log(`🔍 Request body:`, requestBody)
           
           // Add a timeout wrapper to see if it's a network-level timeout
@@ -549,7 +544,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
             }, 420000) // 7 minutes
           })
           
-          const fetchPromise = fetch(`http://localhost:8080/user/stock/${stockSymbol}`, {
+          const fetchPromise = fetch(`${API_BASE}/user/stock/${stockSymbol}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -1150,7 +1145,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                         try {
                           setIsLoadingCurrent(true)
 
-                          const response = await fetch(`http://localhost:8080/user/stock/getByCode/${value}`)
+                          const response = await fetch(`${API_BASE}/user/stock/getByCode/${value}`)
                           
                           if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`)
@@ -1336,9 +1331,11 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                             variant="outline"
                             size="sm"
                             onClick={() => removeNewsItem(index)}
-                            className="absolute top-1 right-2 w-6 h-6 p-0 border-red-400/30 hover:bg-red-500/30 hover:text-white hover:border-red-400 transition-all duration-200 cursor-pointer rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-red-500/70 backdrop-blur-sm"
+                            aria-label="Remove news item"
+                            title="Remove"
+                            className="absolute top-1.5 right-1.5 w-5 h-5 p-0 rounded-full bg-gray-500/10  text-red-600  shadow-sm hover:bg-red-500/25 hover:text-white  focus:outline-none focus:ring-2 focus:ring-red-400/30 active:scale-95 transition-all duration-200 cursor-pointer opacity-100  sm:group-hover:opacity-100 backdrop-blur-sm"
                           >
-                            <X className="h-3 text-red-600 w-3" />
+                            <X className="h-4 w-4" />
                           </Button>
                         )}
                       </div>
@@ -1384,7 +1381,7 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                 {/* Prediction Button */}
                 <Button 
                   onClick={handlePrediction} 
-                  disabled={isLoading || !stockSymbol.trim() || months < 1 || months > 12} 
+                  disabled={isLoading || !stockSymbol.trim()} 
                   className="w-full h-12 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {isLoading ? (
@@ -1410,12 +1407,8 @@ export function StockPredictor({ isDemo = false }: StockPredictorProps) {
                 {/* Loading Info Message */}
                 {isLoading && (
                   <div className="text-center text-xs text-blue-400 bg-blue-500/10 border border-blue-400/20 rounded-lg p-2">
-                    ⏱️ AI model is processing your request... This may take up to 10 minutes
-                    {loadingTimer > 0 && (
-                      <div className="mt-1 text-blue-300">
-                        Elapsed time: {loadingTimer >= 60 ? `${Math.floor(loadingTimer / 60)}m ${loadingTimer % 60}s` : `${loadingTimer}s`}
-                      </div>
-                    )}
+                    ⏱️ AI model is processing your request... This may take several minutes
+                  
                   </div>
                 )}
               </CardContent>
