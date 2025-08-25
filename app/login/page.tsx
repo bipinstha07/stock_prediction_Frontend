@@ -58,7 +58,7 @@ export default function LoginPage() {
       <div className="p-2 sm:p-4 border-b border-white/20 relative z-10">
         <button
           onClick={() => router.push('/')}
-          className="flex items-center space-x-2 text-white/80 hover:text-white hover:bg-white/20 px-3 py-2 rounded-md transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base"
+          className="flex items-center space-x-3 text-white/80 hover:text-white hover:bg-white/20 px-3 py-2 rounded-md transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base"
         >
           <span>←</span>
           <span className="hidden sm:inline">Back to Home</span>
