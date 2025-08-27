@@ -18,7 +18,10 @@ import {
   Zap,
   Star,
   BarChart3,
-  CreditCard
+  CreditCard,
+  Edit,
+  Save,
+  X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,6 +38,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Navbar } from '@/components/navbar';
+import { Input } from '@/components/ui/input';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -43,6 +47,13 @@ export default function SettingsPage() {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [premiumModalTab, setPremiumModalTab] = useState('buy');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.number || '',
+    address: user?.address || ''
+  });
 
   const handleLogout = () => {
     logout();
@@ -75,62 +86,184 @@ export default function SettingsPage() {
     setShowPremiumModal(false);
   };
 
+  const handleEditProfile = () => {
+    setEditFormData({
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.number || '',
+      address: user?.address || ''
+    });
+    setIsEditingProfile(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingProfile(false);
+    setEditFormData({
+      name: user?.name || '',
+      email: user?.email || '',
+      phone: user?.number || '',
+      address: user?.address || ''
+    });
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      // Here you would typically call your backend API to update the user profile
+      console.log('Saving profile data:', editFormData);
+      
+      // For now, we'll just simulate a successful update
+      // In a real app, you'd make an API call like:
+      // const response = await fetch(`/api/user/update`, {
+      //   method: 'PUT',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(editFormData)
+      // });
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Update local state (in a real app, this would come from the API response)
+      // You might want to update the user context here as well
+      
+      setIsEditingProfile(false);
+      // You could show a success toast here
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      // You could show an error toast here
+    }
+  };
+
   const renderPersonalInformation = () => (
     <div className="space-y-8">
-      <div>
-        <h3 className="text-lg font-semibold text-white mb-4">Contact information</h3>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Name</span>
-            <span className="text-white font-medium">{user?.name || 'Not provided'}</span>
+      {/* Profile Header with Edit Button */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-white">Contact information</h3>
+        {!isEditingProfile ? (
+          <Button
+            onClick={handleEditProfile}
+            variant="outline"
+            size="sm"
+            className="border-white/20 text-white hover:bg-white/10 flex items-center space-x-2 bg-transparent"
+          >
+            <Edit className="h-4 w-4" />
+            <span>Edit Profile</span>
+          </Button>
+        ) : (
+          <div className="flex items-center space-x-2">
+            <Button
+              onClick={handleSaveProfile}
+              variant="outline"
+              size="sm"
+              className="border-blue-400 text-blue-400 hover:bg-blue-400/20 flex items-center space-x-2 bg-transparent"
+            >
+              <Save className="h-4 w-4" />
+              <span>Save</span>
+            </Button>
+            <Button
+              onClick={handleCancelEdit}
+              variant="outline"
+              size="sm"
+              className="border-gray-400 text-gray-400 hover:bg-gray-400/20 flex items-center space-x-2 bg-transparent"
+            >
+              <X className="h-4 w-4" />
+              <span>Cancel</span>
+            </Button>
           </div>
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Email Address</span>
-            <div className="flex items-center space-x-2">
-              <span className="text-white font-medium">{user?.email || 'Not provided'}</span>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+          <span className="text-white/70 text-sm sm:text-base">Name</span>
+          {isEditingProfile ? (
+            <Input
+              value={editFormData.name}
+              onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm text-sm sm:text-base w-full sm:w-48"
+              placeholder="Enter your name"
+            />
+          ) : (
+            <span className="text-white font-medium text-sm sm:text-base">{user?.name || 'Not provided'}</span>
+          )}
+        </div>
+        
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+          <span className="text-white/70 text-sm sm:text-base">Email Address</span>
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+            {isEditingProfile ? (
+              <Input
+                value={editFormData.email}
+                onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm text-sm sm:text-base w-full sm:w-48"
+                placeholder="Enter your email"
+                type="email"
+              />
+            ) : (
+              <span className="text-white font-medium text-sm sm:text-base">{user?.email || 'Not provided'}</span>
+            )}
+            <div className="flex items-center space-x-1 text-green-400">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-xs sm:text-sm">Verified</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+          <span className="text-white/70 text-sm sm:text-base">Phone Number</span>
+          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+            {isEditingProfile ? (
+              <Input
+                value={editFormData.phone}
+                onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm text-sm sm:text-base w-full sm:w-48"
+                placeholder="Enter your phone number"
+                type="tel"
+              />
+            ) : (
+              <span className="text-white font-medium text-sm sm:text-base">{user?.number || 'Not provided'}</span>
+            )}
+            {user?.number && !isEditingProfile && (
               <div className="flex items-center space-x-1 text-green-400">
                 <CheckCircle className="h-4 w-4" />
-                <span className="text-sm">Verified</span>
+                <span className="text-xs sm:text-sm">Verified</span>
               </div>
-            </div>
+            )}
           </div>
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Phone Number</span>
-            <div className="flex items-center space-x-2">
-              <span className="text-white font-medium">{user?.number || 'Not provided'}</span>
-              {user?.number && (
-                <div className="flex items-center space-x-1 text-green-400">
-                  <CheckCircle className="h-4 w-4" />
-                  <span className="text-sm">Verified</span>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Address</span>
-            <span className="text-white font-medium">{user?.address || 'Not provided'}</span>
-          </div>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+          <span className="text-white/70 text-sm sm:text-base">Address</span>
+          {isEditingProfile ? (
+            <Input
+              value={editFormData.address}
+              onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
+              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 backdrop-blur-sm text-sm sm:text-base w-full sm:w-48"
+              placeholder="Enter your address"
+            />
+          ) : (
+            <span className="text-white font-medium text-sm sm:text-base">{user?.address || 'Not provided'}</span>
+          )}
         </div>
       </div>
 
       <div>
         <h3 className="text-lg font-semibold text-white mb-4">Other details</h3>
         <div className="space-y-4">
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Account numbers</span>
-            <Button variant="link" className="text-green-400 hover:text-green-300 p-0 h-auto">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+            <span className="text-white/70 text-sm sm:text-base">Account numbers</span>
+            <Button variant="link" className="text-green-400 hover:text-green-300 p-0 h-auto text-sm sm:text-base">
               See account numbers
             </Button>
           </div>
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Investor profile</span>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+            <span className="text-white/70 text-sm sm:text-base">Investor profile</span>
             <Button variant="ghost" className="text-white hover:text-white/80 p-0 h-auto">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-          <div className="flex justify-between items-center py-3 border-b border-white/10">
-            <span className="text-white/70">Trusted Contact</span>
-            <span className="text-white font-medium">None listed</span>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-white/10 space-y-2 sm:space-y-0">
+            <span className="text-white/70 text-sm sm:text-base">Trusted Contact</span>
+            <span className="text-white font-medium text-sm sm:text-base">None listed</span>
           </div>
         </div>
       </div>
