@@ -271,7 +271,7 @@ export default function PortfolioPage() {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Left Sidebar - Stock Selection & Market Overview */}
-          <div className="xl:col-span-1 space-y-6">
+          <div className="xl:col-span-1 space-y-6 xl:sticky xl:top-6 xl:self-start xl:h-fit">
             {/* Stock Selection Card */}
             <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 py-4">
@@ -336,38 +336,7 @@ export default function PortfolioPage() {
               </CardContent>
             </Card>
 
-            {/* Market Overview Card */}
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 py-4">
-                <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-green-400" />
-                  Market Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 space-y-3">
-                <div className="flex items-center justify-between p-3 bg-green-500/20 rounded-lg border border-green-400/30">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-green-400" />
-                    <span className="text-sm font-medium text-green-100">S&P 500</span>
-                  </div>
-                  <span className="text-sm text-green-100">+1.2%</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-blue-500/20 rounded-lg border border-blue-400/30">
-                  <div className="flex items-center gap-2">
-                    <Building2 className="h-4 w-4 text-blue-400" />
-                    <span className="text-sm font-medium text-blue-100">NASDAQ</span>
-                  </div>
-                  <span className="text-sm text-blue-100">+0.8%</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-purple-500/20 rounded-lg border border-purple-400/30">
-                  <div className="flex items-center gap-2">
-                    <Globe className="h-4 w-4 text-purple-400" />
-                    <span className="text-sm font-medium text-purple-100">Global</span>
-                  </div>
-                  <span className="text-sm text-purple-100">+0.5%</span>
-                </div>
-              </CardContent>
-            </Card>
+           
 
             {/* AI Features Card */}
             <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl overflow-hidden">
@@ -405,7 +374,7 @@ export default function PortfolioPage() {
 
           {/* Main Content Area - AI Analysis */}
           <div className="xl:col-span-3">
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl overflow-hidden h-full">
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-xl overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 py-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -520,8 +489,8 @@ export default function PortfolioPage() {
 
                     {/* Chat Interface */}
                     <div className="space-y-4">
-                      {/* Chat Messages Area */}
-                      <div className="h-96 overflow-y-auto pr-2 border border-white/30 rounded-lg bg-white/10 p-4 backdrop-blur-sm">
+                                             {/* Chat Messages Area */}
+                       <div className="h-134 overflow-y-auto pr-2 border border-white/30 rounded-lg bg-white/10 p-4 backdrop-blur-sm">
                         {isAnalyzing && (
                           <div className="flex items-center gap-3 text-blue-200 bg-blue-500/20 p-4 rounded-lg border border-blue-400/30 backdrop-blur-sm">
                             <Loader2 className="h-5 w-5 animate-spin" />
