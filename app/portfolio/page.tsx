@@ -296,7 +296,7 @@ export default function PortfolioPage() {
                 </div>
 
                 {/* Stock List */}
-                <div className="space-y-2 max-h-80 overflow-y-auto">
+                <div className="space-y-2 h-80 overflow-y-auto custom-scrollbar">
                   {filteredStocks.map((stock) => (
                     <div
                       key={stock.symbol}
@@ -490,7 +490,7 @@ export default function PortfolioPage() {
                     {/* Chat Interface */}
                     <div className="space-y-4">
                                              {/* Chat Messages Area */}
-                       <div className="h-134 overflow-y-auto pr-2 border border-white/30 rounded-lg bg-white/10 p-4 backdrop-blur-sm">
+                       <div className="h-64 overflow-y-auto pr-2 border border-white/30 rounded-lg bg-white/10 p-4 backdrop-blur-sm custom-scrollbar">
                         {isAnalyzing && (
                           <div className="flex items-center gap-3 text-blue-200 bg-blue-500/20 p-4 rounded-lg border border-blue-400/30 backdrop-blur-sm">
                             <Loader2 className="h-5 w-5 animate-spin" />

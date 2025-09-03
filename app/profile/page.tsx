@@ -609,7 +609,7 @@ export default function ProfilePage() {
               </div>
               
               {/* Scrollable Stocks List */}
-              <div className="h-[200px] overflow-y-auto space-y-2 pr-2">
+              <div className="h-80 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
                 {filteredUserStocks.map(stock => renderStockCard(stock))}
               </div>
               
@@ -696,7 +696,10 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 
-                {filteredUserStocks.map(stock => renderStockCard(stock))}
+                {/* Scrollable Stocks List */}
+                <div className="h-80 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                  {filteredUserStocks.map(stock => renderStockCard(stock))}
+                </div>
                 
                 <div className="pt-3 border-t border-white/20">
                   {user?.isPremium ? (
@@ -1211,7 +1214,7 @@ export default function ProfilePage() {
       {/* Add Stock Modal */}
       {showAddStockModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <Card className="bg-gradient-to-br from-purple-900 via-blue-900 to-pink-900 border border-white/20 shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar">
             <CardHeader>
               <CardTitle className="text-2xl text-white text-center">Add New Stock to Portfolio</CardTitle>
               <CardDescription className="text-white/70 text-center">
@@ -1287,7 +1290,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Available Stocks Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto custom-scrollbar">
                 {allStocks.filter(stock => !userPortfolio.find(p => p.symbol === stock.symbol)).map(stock => (
                   <Card 
                     key={stock.symbol}
